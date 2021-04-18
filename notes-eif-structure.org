@@ -1,0 +1,39 @@
+* Structure
+- IF and EIF as gradients (and canonical) gradients -- the mathematical/geometric perspective on the
+  statistical problem; i.e., the statistical problem as a geometric problem.
+  - "Visualization" (surface in $\R^3$?)
+  - functional gradients
+- Influence functions of estimators
+  - RALs and minimal variance.
+  - The connection to the geometric problem
+- Motivation
+  - Efficiency
+  - Debiasing (most important in this setting?)
+
+How exact, detailed and mathematically precise should it be?
+
+
+* Notes and other stuff
+  Explain why the EIF handles /both/ bias /and/ variance issues! Focus on the bias, as that will in
+fact be the most important for the present case (ATE); the efficiency results can then be explained
+with reference to the parametric submodels, which are introduced anyway.
+
+** DONE Use the concept above and the Hellinger norm to define the canonical gradient.
+   CLOSED: [2021-04-18 Sun 21:09]
+** DONE Expand the definitions to get a better understanding of the tangent space. 
+   CLOSED: [2021-04-18 Sun 21:09]
+** DONE and then the alternative characterization of the canonical gradient.
+   CLOSED: [2021-04-18 Sun 21:10]
+** TODO Remember to tie the knots to the initial discussion and point to the connection to mat-intro: 
+Gets the most informative direction + orthogonal to the nuisance parameters (last points is still a
+  bit fuzzy...?).
+  - Some motivation for this? Find a "parametrization" such that the first order bias vanished...?
+    -- yes, moving in the "direction corresponding to" the canonical gradient will mean that
+    perturbations in the other (nuisance) direct is small -- due to the fundamental fact of
+    orthogonality of the partial derivatives.
+  - Think a bit about this... And about the parametrization thing, and how obvious it is whether or
+    not such a gradient is unique... Couldn't it depend on the parametrization?
+
+** Maybe include
+- Perhaps example showing the G-dir of the ATE is 0?
+- Include pictures of different kinds of diff?

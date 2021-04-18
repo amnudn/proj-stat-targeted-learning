@@ -1,3 +1,7 @@
+auto/
+
+## Template from github:
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

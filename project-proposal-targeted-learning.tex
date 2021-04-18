@@ -1,0 +1,700 @@
+
+% Created 2018-08-01 Wed 12:57
+% Intended LaTeX compiler: pdflatex
+\documentclass{article}
+               \usepackage{listings}
+               \usepackage{color}
+               \usepackage{tocloft}
+
+               \usepackage{times}
+%\usepackage[cmbold]{mathtime}
+\usepackage{bm}
+\usepackage{natbib}
+
+
+
+% --------- OWN START
+
+\newenvironment{proof}{\textit{Proof.}}{\hfill$\square$}
+
+\usepackage{hyphenat}
+\usepackage{mathtools}
+\hyphenation{pa-ra-me-trized}
+\usepackage{bbold}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{prodint}
+\usepackage{color}
+
+               
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authoryear,open={(},close={)}}
+\usepackage{authblk} 
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\newcommand*{\qeda}{\hfill\ensuremath{\tiny\CIRCLE}} 
+\usepackage[small]{titlesec}
+\titleformat{\subsection}[runin]{\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[runin]
+{\normalfont\bfseries}{\thesubsubsection}{1em}{}
+%{\normalfont\itshape}{\normalfont\thesubsubsection}{1em}{}
+\usepackage{adjustbox}
+\usepackage{prodint}
+\usepackage{booktabs}
+\usepackage{bm}
+\usepackage{bbold}
+%\setlength\parindent{0pt}
+\usepackage{wasysym}
+\usepackage[margin=1.3in]{geometry}
+\setcounter{secnumdepth}{4}
+
+\newcommand{\cadlag}{c\`{a}dl\`{a}g }
+\newcommand{\Cadlag}{C\`{a}dl\`{a}g }
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\one}{1}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\VV}{V}
+\newcommand{\PP}{\mbox{P}}
+\newcommand{\norm}{\mathcal{N}}
+\newcommand{\lag}{N}
+\newcommand{\str}{S}
+\newcommand{\smin}{s^{\min}}
+\newcommand{\smax}{s^{\max}}
+\newcommand{\styp}{s^{*}}
+\newcommand{\period}{[a,b]}
+\newcommand{\periodK}{\ensuremath{[T_k,T_{k+1})}}
+\newcommand{\K}{K}
+\newcommand{\kk}{k}
+\newcommand{\D}{D}
+\newcommand{\B}{B}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\E}{E}
+\newcommand{\XX}{X}
+\newcommand{\QQ}{Q}
+\newcommand{\Ru}{R}
+\newcommand{\GG}{G}
+\newcommand{\T}{T}
+\newcommand{\st}{s}
+\newcommand{\Nn}{N}
+\newcommand{\C}{C}
+\newcommand{\uu}{u}
+\newcommand{\vv}{v}
+\newcommand{\zz}{z}
+\newcommand{\ww}{w}
+\newcommand{\M}{M}
+\newcommand{\I}{I}
+\newcommand{\RR}{R}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\1}{\mathbb{1}}
+\newcommand{\ses}{SES}
+\newcommand{\Y}{Y}
+\newcommand{\htt}{h}
+\newcommand{\dtt}{d}
+\newcommand{\tM}{M}
+\newcommand{\ta}{\tau_0}
+\newcommand{\tb}{\tau_1}
+\newcommand{\intd}{\mathcal{D}}
+\newcommand{\nW}{n_W}
+\newcommand{\nL}{n_L}
+\newcommand{\tmax}{\tau}
+\newcommand{\A}{A}
+\newcommand{\LL}{L}
+\newcommand{\W}{W}
+\newcommand{\X}{X}
+\newcommand{\U}{U}
+\newcommand{\Z}{Z}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\Pvar}{W}
+\newcommand{\pvar}{p}
+\newcommand{\logit}{\text{logit}}
+\newcommand{\expit}{\text{expit}}
+\newcommand{\argmax}{\text{argmax}}
+\newcommand{\argmin}{\text{argmin}}
+\newcommand{\cupdot}{\mathbin{\mathaccent\cdot\cup}}
+\newcommand{\qed}{\hfill\(\square\)}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{defi}{Definition}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{example}[thm]{Example}
+\newtheorem{obs}{Observation}
+\newtheorem{choice}{Choice}
+\newtheorem{drug}{Drug type}
+\renewcommand\thedrug{\Roman{drug}}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{inclusion}{Inclusion criterion}
+\newtheorem{proxy}{Proxy}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzset{every picture/.style=remember picture}
+\newcommand{\mathnode}[1]{\mathord{\tikz[baseline=(#1.base), inner sep = 0pt]{\node (#1) {$#1$};}}}
+
+\lstset{
+keywordstyle=\color{blue},
+commentstyle=\color{red},stringstyle=\color[rgb]{0,.5,0},
+literate={~}{$\sim$}{1},
+basicstyle=\ttfamily\small,
+columns=fullflexible,
+breaklines=true,
+breakatwhitespace=false,
+numbers=left,
+numberstyle=\ttfamily\tiny\color{gray},
+stepnumber=1,
+numbersep=10pt,
+backgroundcolor=\color{white},
+tabsize=4,
+keepspaces=true,
+showspaces=false,
+showstringspaces=false,
+xleftmargin=.23in,
+frame=single,
+basewidth={0.5em,0.4em},
+}
+
+\usepackage{authblk}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+
+
+\title{\textsc{Targeted learning for causal effect estimation} \\[0.5em]
+%{  \large or... } \\
+%  \textsc{Influence function based nonparametric efficient estimation of causal effect } \\[0.5em] 
+\large Project instructors:\\[-0.8em]}
+%\author{\large Project instructors: \normalsize \\ Helene Rytgaard (hely@sund.ku.dk) \\
+% and \\ Anders  Munch (a.munch@sund.ku.dk)}
+\author[1]{\normalsize Helene Rytgaard (hely@sund.ku.dk) }
+\author[1]{Anders Munch (a.munch@sund.ku.dk)}
+\affil[1]{Section of Biostatistics, University of Copenhagen}
+\date{}                     %% if you don't need date to appear
+\setcounter{Maxaffil}{0}
+\renewcommand\Affilfont{\itshape\small}
+
+
+\begin{document}
+
+\maketitle
+
+
+% \color{red} Right now I wrote out like it has to be targeted
+% learning; but could just be semiparametric efficient
+% estimation... :) \color{black} \\
+
+%\tableofcontents
+
+
+
+
+
+In this project we consider causal effect estimation in semiparametric
+settings where the target parameter is low-dimensional but estimation
+has to deal with potentially high-dimensional nuisance parameters
+often taking the form of a regression function. In these settings,
+efficient influence function based estimation provides a popular basis
+for combining machine learning techniques with valid statistical
+inference. We will consider and investigate these methods for
+estimation of the average treatment effect (ATE) based on
+observational (i.e., non-randomized) data.
+
+
+\section{The problem to be studied}
+
+
+In randomized trials, where trial participants are enrolled and
+randomized to a treatment or a placebo arm, the randomization ensures
+that the differences in outcome occur as a result of treatment
+differences only. Randomized trials are often considered the golden
+standard for causal inference, but may not always be feasible or
+ethical. In this project, the question we want to address is whether
+having a planned cesarian section (intended cesarian section) among
+women who gave birth twice changes the risk of postpartum haemorrhage
+during the second delivery. For this question, performing a randomized
+trial would not be ethical% , and it is thus of high interest to turn to
+% observational data for causal effect estimation
+. With tools from
+causal inference and semiparametric efficiency theory, we can
+formulate and optimally estimate causal effects from observational
+data% as
+% effects we would had seen had we conducted a randomized trial
+. \\
+
+As part of the project, you will:
+\begin{itemize}
+\item[\(*\)] Understand key concepts from semiparametric efficiency
+  theory and the bias-correction abilities of influence function based
+  estimation.
+\item[\(*\)] Translate a real-world data application into a
+  mathematical and statistical formulation of the estimation problem
+  that needs to be solved. 
+\item[\(*\)] Assess model misspecification and estimation performance
+  via simulations in \verb+R+.
+\item[\(*\)] Conduct an analysis of the Danish Birth Registry data in
+  \verb+R+ for average treatment effect estimation.
+\end{itemize}
+
+
+
+
+
+
+\section{Targeted learning}
+
+
+The targeted learning framework has been developed as a general
+template for combining machine learning and causal inference. In this
+project we consider a particular data structure as follows. Suppose we
+observed an iid sample \(O_1,\ldots,O_n\), \(n\in\mathbb{N}\) of a
+random variable \(O \in\mathcal{O}\) distributed according to an
+unknown distribution function \(P_0\) belonging to a statistical model
+\(\mathcal{M}\). Each observation consists of \(O= (X, A, Y)\) where
+\(X\in \R^d\) are covariates, \(A\in \lbrace 0,1\rbrace\) is a binary
+exposure and \(Y\in\lbrace 0, 1\rbrace\) is a binary outcome
+variable. The target parameter can be written as functional
+\(\Psi \, : \, \mathcal{M} \rightarrow \R\) of distributions
+\(P\in\mathcal{M}\), for our purposes defined as
+\begin{align}
+  \Psi( P ) = \EE_P \big[ \EE_P[ Y \mid A=1, X] - \EE[ Y\mid A=0,X]\big],
+  \label{eq:Psi:ate}
+\end{align}
+where \(\EE_P[\cdot]\) denotes the expectation operator under the
+distribution \(P\in \mathcal{M}\). The parameter defined by
+\eqref{eq:Psi:ate} is commonly referred to as the \textit{average
+  treatment effect} (ATE); under structural assumptions, the ATE can
+be interpreted causally \citep{hernanrobins}.  To estimate
+\(\psi_0 = \Psi(P_0)\), one needs to estimate \(P_0\), or relevant
+components of \(P_0\).  With an estimator \(\hat{P}_n\), one obtains a
+so-called plug-in estimator for \(\psi_0\) as
+\(\hat{\Psi}_n = \Psi( \hat{P}_n)\). To estimate the ATE, one needs
+specifically to estimate the conditional expectations
+\(\EE_{P_0}[ Y \mid A=1, X]\) and \(\EE_{P_0}[ Y \mid A=0, X]\). These
+are simple binary regressions; thus, we can apply logistic regression,
+or any machine learning algorithm working with binary outcomes. After
+obtaining such estimators, an estimator for the target parameter can
+be obtained by taking the empirical average of the
+difference. However, nice performance for estimation of the
+regressions \(\EE_{P_0}[ Y \mid A=a, X]\), \(a=0,1\), does not
+necessarily translate into nice performance for estimation of the
+target parameter. Basing the estimation procedure on the so-called
+efficient influence function, on the other hand, shifts the
+performance optimization to the target parameter specifically. This
+requires estimating both the exposure distribution \(P(A=a \mid X)\)
+as well as the outcome regression above (potentially using machine
+learning), but then provides the basis for asymptotic linearity and
+efficiency of the resulting estimator and thus inference based on the
+limiting normal distribution.  Thus, estimation based on influence
+functions allow us to use flexible estimates for \(P_0\), to ensure
+optimal asymptotic behavior of the estimator without strict parametric
+assumptions.
+
+
+
+
+\iffalse Suppose we observe an iid sample \(O_1,\ldots,O_n\),
+\(n\in\mathbb{N}\) of a random variable \(O \in\mathcal{O}\)
+distributed according to an unknown distribution function \(P_0\)
+belonging to a statistical model \(\mathcal{M}\). The target parameter
+can be written as functional
+\(\Psi \, : \, \mathcal{M} \rightarrow \R\) of distributions
+\(P\in\mathcal{M}\). To estimate \(\psi_0 = \Psi(P_0)\), we need to
+estimate \(P_0\), or relevant components of \(P_0\).  With an
+estimator \(\hat{P}_n\), one obtains a so-called plug-in estimator for
+\(\psi_0\) as \(\hat{\Psi}_n = \Psi( \hat{P}_n)\).
+
+An estimator \(\hat{\Psi}_n\) is said to be asymptotically linear
+estimator if there exists a function
+\(\phi(P_0) \, : \, \mathcal{O}\rightarrow \R\) with mean zero and
+finite variance under \(P_0\) such that: 
+\begin{align}
+  \sqrt{n} \big( \hat{\Psi}_n - \psi_0 \big) =  \frac{1}{\sqrt{n}} \sum_{i=1}^n
+  \, \phi(P_0) (O_i)  + R_n ,
+  \label{eq:asymptotic:linearity}
+\end{align}
+where \(R_n \overset{P}{\rightarrow} 0\) as \(n\rightarrow\infty\).
+When an estimator can be written on the form in
+\eqref{eq:asymptotic:linearity}, \(\phi\) is called the
+\textit{influence function} of \(\hat{\Psi}_n\). A straightforward
+consequence of \eqref{eq:asymptotic:linearity} is the asymptotic
+normality
+\begin{align*}  
+  \sqrt{n} \big( \hat{\Psi}_n - \psi_0 \big) \overset{\mathcal{D}}{\rightarrow} N(0, P_0 \phi(P_0)^2),
+\end{align*} 
+which can be used to provide asymptotic inference for the estimator
+\(\hat{\Psi}_n\). A key result of semiparametric efficiency theory
+\citep{bickel1993efficient} yields that one particular influence
+function, called the \textit{efficient influence function} has the
+lowest variance among all influence functions and thus characterizes
+the best variance among all asymptotically linear estimators. The main
+idea of targeted learning is to construct estimators \(\hat{\Psi}_n\)
+that are asymptotically linear with influence function equal to the
+efficient influence function. \fi
+
+
+
+
+
+\section{Data}
+
+
+
+In the project we will work with a random subset of the data described
+in \cite{wikkelso2014prediction}. The dataset contains data from 48272
+Danish women who gave birth twice. The main outcome is a binary
+variable called \verb+PPHbin+ which indicates if the woman had a
+postpartum haemorrhage (to haemorrhage means to bleed very heavily)
+during the second delivery.
+%
+% Analyzing the section delivery has the advantage that we can use
+% information from the first delivery to predict the decision to have
+% a planned cesarian section and to predict the outcome.
+%
+The data are from the registries and have an observational
+character. In particular, note that the decision to plan a cesarian
+section was not randomized. With causal tools we want to analyze the
+causal effect of a planned cesarian section on the risk of postpartum
+haemorrhage, i.e., the effect that one would have observed in a
+hypothetical study which randomizes women to either intended cesarian
+section or intended vaginal birth.
+
+\section{What you need to know before the course}
+
+It is not required that you know semiparametric efficiency theory nor
+causal inference beforehand, but you must be able to work comfortably
+with:
+
+\begin{itemize}
+\item[\(*\)] Derivatives of functions, directional derivative, chain rule.
+\item[\(*\)] Probability distributions, conditional distributions, empirical
+  distribution
+\item[\(*\)] Central limit theorem
+\item[\(*\)] Regression models, including logistic regression
+\item[\(*\)] Statistical inference, parameter estimation, confidence
+  intervals, p-values
+\item[\(*\)] \verb+R+ programming
+\end{itemize}
+
+ 
+\section{Project work}
+
+Figure \ref{fig:roadmap} illustrates the roadmap of the data analysis.
+
+\begin{figure}[!h] % h: here, t: top, b: bund, !: ikke p�nt
+\begin{center}
+  \makebox[\textwidth][c]{
+    \includegraphics[width=0.6\textwidth,angle=0]{./figures/project-roadmap.pdf}}
+\end{center}
+\caption{Roadmap for the data analysis of the project.}
+\label{fig:roadmap}
+\end{figure}
+
+\section{Some literature}
+
+There are many papers and some books about the mathematical background
+of the methods we consider. A very nice review is provided by
+\cite{kennedy2016semiparametric}. %Visual intuition: \cite{fisher2020visually}.
+For causal notation, we follow the framework with counterfactual
+variables \cite{hernanrobins}. Targeted learning is treated quite
+generally in the two books \cite{van2011targeted} and
+\cite{van2018targeted}.
+ 
+Other more in-depth references on semiparametric efficiency theory for
+the more interested are
+\cite{bickel1993efficient,van2000asymptotic,vanRobins2003unified,
+  tsiatis2007semiparametric}; \citet[][Appendix A]{ van2011targeted}.
+
+\bibliography{refs}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\subsection{Exploratory analysis, January 18}
+\label{sec:empirical:results}
+
+\newpage
+
+\subsection{Exploratory analysis, January 18}
+\label{sec:empirical:results:jan:18}
+
+In last week's simulations, the output was often NA for small sample
+sizes, and \(\Sigma_n\) was not always invertible. It turns out the NA
+was due to a mixture of positivity issues and the last time-point
+being smaller than \(\min_i \tilde{T}_i\) (effectively giving a
+variance of zero). I have now added a regularization of \(\Sigma_n\)
+when needed (adding a small number -- \(0.05\) -- to the diagonal). I also
+discovered that my checking of the supremum norm for the weighting by
+\(\Sigma_n\) with continued updating was too strict --- I had by
+mistake divided the right hand by \(\sqrt{d}\) an extra time.
+
+Right now I focus on small number of simulation repetitions
+(\(M=100\)).
+
+For the setting \textbf{without competing risks}: \(M=100\) simulation
+repetitions; average treatment effect on the survival curve across
+\(t \) in a grid of thirty time-points; and sample sizes
+\(n \in \lbrace 100, 200, 300, 400, 500,\)
+\(600, 700, 800\rbrace\).
+
+
+
+For the setting \textbf{with competing risks}: \(M=100\) simulation
+repetitions; average treatment effect on the three subdistributions
+simultaneously across \(t_0 \in \lbrace 0.45, 0.5, 1 \rbrace\); and
+sample sizes \(n \in \lbrace 100, 200, 300, 400,\) \( 500\rbrace\). \\
+
+Overall, Choices \ref{ex:2} and \ref{ex:3} seem to do quite well; they
+are both faster and more robust. \\
+
+When checking \eqref{eq:check:max:m}, this seems that this is
+accomplished by weighting by \(\Sigma_n\) and continuing iterations
+until
+\begin{align*}
+  \Vert  \mathbb{P}_n D^*(\hat{P}^*_n) \Vert 
+  \le \frac{1}{\sqrt{n}\log n} .
+\end{align*}
+%Alternatively, we should check \eqref{eq:alternative:check}? 
+
+\newpage
+
+\subsection{Exploratory analysis, January 12}
+\label{sec:empirical:results:jan:12}
+
+We are interested in investigating:
+\begin{enumerate}
+\item When is what norm (c.f., Examples \ref{ex:1}--\ref{ex:3} of
+  Section \ref{sec:hilbert:space:norms}) best?
+\item[\(*\)] I have tried the following different settings:
+  \begin{enumerate}
+  \item targeting the survival curve across
+    \(t_0 \in \lbrace 0.49, 0.5, 0.51, 0.8, 1.2, 1.5\rbrace\) for
+    varying sample sizes
+    (\(n \in \lbrace 200, 300, 500, 700, 800, 1000\rbrace\)) and
+    \(M=500\) repetitions.
+  \item targeting the survival curve across 30 equidistant time-points
+    for varying sample sizes
+    (\(n \in \lbrace 100, 200, 300, 400, 500, 600 \rbrace\)), but only
+    and \(M=10\) repetitions.
+  \item targeting the survival curve across 30 equidistant time-points
+    for varying (small) sample sizes
+    (\(n \in \lbrace 100, 150, 200, 250\rbrace\)) and \(M=500\)
+    repetitions.
+  \item targeting three subdistributions across three time-points
+    \(t_0 \in \lbrace 0.45, 0.5, 1 \rbrace\) for sample size
+    \(n = 1000\) and \(M=100\) simulation repetitions. \textit{(I want
+      to repeat this for smaller sample sizes as well).}
+  \end{enumerate}
+\item Estimation of the survival curve across a nice grid of
+  time-points, while tracking the supremum norm.
+\item[\(*\)] For this, I have tracked the supremum norm while running
+  (b) and (c) above. \\
+\end{enumerate}
+
+\textit{What can we learn?}
+
+\begin{itemize}
+\item Coverage is good across all simulation repetitions, both for
+  survival and competing risks setting.
+\item One-step TMLE (obviously) produces a monotone survival curve,
+  whereas iterative TMLE does not always (worse for smaller sample
+  sizes).
+\item For (a), one-step TMLE seems to win over iterative TMLE in terms
+  of relative mse when sample size is small. 
+\item For (a) and (b), norms weighted seem to converge much
+  faster. Particularly, for (a) we see that the mean number of
+  iterations are about the same when weighting by \(\Sigma_n\) and
+  \(\sigma_n\) (maybe maximum number of iterations for \(\sigma_n\) is
+  higher, at least for some sample sizes), whereas unweighted one-step
+  requires many more iterations.
+\item For (b) (many time-points, but only few repetitions),
+  \(\Sigma_n\) converges much faster than \(\sigma_n\).
+\item For (d) (competing risks), the norm weighted by \(\sigma_n\)
+  requires in some situations many more iterations than \(\Sigma_n\).
+\item For (d) (competing risks), where there is one late time-point,
+  \(\Sigma_n\) seems to win in terms of relative mse.
+\item A collection of some issues:
+  \begin{itemize}
+  \item Algorithms cannot handle too many time-points combined with
+    too small sample sizes; fails to give results. \textit{I have not
+      investigated this further}.
+  \item \(\Sigma_n\) is not always invertible; I suppose this may be
+    due to the choice of time-points and what is observed in the
+    data. This is better when sample size \(n\) is
+    larger. \textit{Could investigate this further}.
+  \end{itemize}
+\end{itemize}
+
+\newpage\phantom{blabla}
+\newpage\phantom{blabla}
+
+
+
+
+\subsection{Exploratory results (old)}
+\label{sec:empirical:results:old}
+
+The following plots show some results from some of the simulations I
+have run, in order to:
+\begin{itemize}
+\item Investigate the impact of varying the norms of Example
+  \ref{ex:1}--\ref{ex:3} (see Section \ref{sec:hilbert:space:norms}):
+  Figures \ref{fig:plot:study1} and  \ref{fig:plot:surv:study2}.
+\item Verify the theoretical properties when targeting three
+  cause-specific average treatment effects simultaneously across
+  multiple time-points: Figure \ref{fig:plot:study2}.
+\item Illustrate the use of one-step TMLE on just a simple dataset:
+  Figure \ref{fig:plot:one1}.
+\item Illustrate the effect of the targeting step in the survival
+  setting to remove bias: Figure \ref{fig:plot:surv:study3}.
+\end{itemize}
+
+\newpage 
+
+% \subsection{Simulation study}
+
+
+\begin{figure*}[!h] % h: here, t: top, b: bund, !: ikke p�nt
+  \centering
+  \includegraphics[width=1.0\textwidth,angle=0]{./figures/plot-results-3-tau035-tau05-n1000-M500.pdf}
+  \caption{Results from targeting the average treatment effect on
+    three cause-specific risk functions across two time-points
+    simultaneously; each row corresponds to the three examples of
+    Hilbert space norms, see Section \ref{sec:hilbert:space:norms}.
+    Below and above the points, respectively, are shown the coverage
+    of confidence intervals across simulation repetitions and the MSE
+    relative to the corresponding nonparametric Aalen-Johansen. The
+    points mark the average of TMLE estimates across simulation
+    repetitions, and the true values are shown as the dashed red
+    line. }
+  \label{fig:plot:study1}   
+\end{figure*}
+
+\begin{figure*}[!h] % h: here, t: top, b: bund, !: ikke p�nt
+  \centering
+  \includegraphics[width=1.0\textwidth,angle=0]{./figures/plot-results-3-tau01-tau0225-tau035-tau0475-tau06-n1000-M500.pdf}
+  \caption{Results from targeting the average treatment effect on
+    three cause-specific risk functions across multiple time-points
+    simultaneously. Below and above the points, respectively, are
+    shown the coverage of confidence intervals across simulation
+    repetitions and the MSE relative to the corresponding
+    nonparametric Aalen-Johansen. The points mark the average of TMLE
+    estimates across simulation repetitions, and the true values are
+    shown as the dashed red line.  }
+  \label{fig:plot:study2}   
+\end{figure*}
+
+% \subsection{Illustration on a single dataset}
+
+
+
+\begin{figure*}[!h] % h: here, t: top, b: bund, !: ikke p�nt
+  \centering
+  \includegraphics[width=1.0\textwidth,angle=0]{./figures/plot-illustration-tau01-tau0156-tau0211-tau0267-tau0322-tau0378-tau0433-tau0489-tau0544-tau06-n1000-with-true-curves.pdf}
+  \caption{Results from targeting three cause-specific and
+    treatment-specific risk functions across multiple time-points
+    simultaneously for a single dataset. The dashed lines show the
+    true curves.  }
+  \label{fig:plot:one1}   
+\end{figure*}
+
+\begin{figure*}[!h] % h: here, t: top, b: bund, !: ikke p�nt
+  \centering
+  \includegraphics[width=1.0\textwidth,angle=0]{./figures/plot-results-survival-tau01-tau0256-tau0411-tau0567-tau0722-tau0878-tau1033-tau1189-tau1344-tau15-n1000-M500.pdf}
+  \caption{Results from targeting the average treatment effect on
+    survival across multiple time-points simultaneously. Below and
+    above the points, respectively, are shown the coverage of
+    confidence intervals across simulation repetitions and the MSE
+    relative to the corresponding nonparametric Kaplan-Meier
+    estimator. The points mark the average of TMLE estimates across
+    simulation repetitions, and the true values are shown as the
+    dashed red line.  }
+  \label{fig:plot:surv:study2}   
+\end{figure*}
+
+
+\begin{figure*}[!h] % h: here, t: top, b: bund, !: ikke p�nt
+  \centering
+  \includegraphics[width=1.0\textwidth,angle=0]{./figures/plot-results-misspecified-survival-tau01-tau0256-tau0411-tau0567-tau0722-tau0878-tau1033-tau1189-tau1344-tau15-n1000-M500.pdf}
+  \caption{Results from targeting the average treatment effect on
+    survival across multiple time-points simultaneously.  The points
+    mark the average of TMLE estimates across simulation repetitions,
+    and the true curve is shown as the dashed red line; the upper plot
+    shows the curve estimated with a misspecified Cox model, and the
+    lower plot show shows the curve resulting from adding the TMLE
+    step to the misspecified Cox model. }
+  \label{fig:plot:surv:study3}   
+\end{figure*}
+
+%\section*{Practical considerations}
+
+%When sample size is small, we expect that we cannot solve all
+%equation. Likewise, when there are too may causes.
+
+
+%\subsection*{Illustration with one dataset}
