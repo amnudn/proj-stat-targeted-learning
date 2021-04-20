@@ -32,12 +32,12 @@
 \usepackage{amsmath}
 \usepackage{array}
 \usepackage[T1]{fontenc}
-\usepackage{natbib}
+\usepackage{natbib} 
 \bibliographystyle{abbrvnat}
 \setcitestyle{authoryear,open={(},close={)}}
 \usepackage{authblk} 
 \usepackage{mathrsfs}
-\usepackage{enumitem}
+\usepackage{enumitem} 
 \newcommand*{\qeda}{\hfill\ensuremath{\tiny\CIRCLE}} 
 \usepackage[small]{titlesec}
 \titleformat{\subsection}[runin]{\bfseries}{\thesubsection}{1em}{}
@@ -275,38 +275,50 @@ variable. The target parameter can be written as functional
   \Psi( P ) = \EE_P \big[ \EE_P[ Y \mid A=1, X] - \EE[ Y\mid A=0,X]\big],
   \label{eq:Psi:ate}
 \end{align}
-where \(\EE_P[\cdot]\) denotes the expectation operator under the
-distribution \(P\in \mathcal{M}\). The parameter defined by
-\eqref{eq:Psi:ate} is commonly referred to as the \textit{average
-  treatment effect} (ATE); under structural assumptions, the ATE can
-be interpreted causally \citep{hernanrobins}.  To estimate
-\(\psi_0 = \Psi(P_0)\), one needs to estimate \(P_0\), or relevant
-components of \(P_0\).  With an estimator \(\hat{P}_n\), one obtains a
-so-called plug-in estimator for \(\psi_0\) as
-\(\hat{\Psi}_n = \Psi( \hat{P}_n)\). To estimate the ATE, one needs
-specifically to estimate the conditional expectations
-\(\EE_{P_0}[ Y \mid A=1, X]\) and \(\EE_{P_0}[ Y \mid A=0, X]\). These
-are simple binary regressions; thus, we can apply logistic regression,
-or any machine learning algorithm working with binary outcomes. After
-obtaining such estimators, an estimator for the target parameter can
-be obtained by taking the empirical average of the
-difference. However, nice performance for estimation of the
-regressions \(\EE_{P_0}[ Y \mid A=a, X]\), \(a=0,1\), does not
-necessarily translate into nice performance for estimation of the
-target parameter. Basing the estimation procedure on the so-called
-efficient influence function, on the other hand, shifts the
+where \(\EE_P[\cdot]\) denotes the expectation operator under the distribution \(P\in \mathcal{M}\).
+The parameter defined by \eqref{eq:Psi:ate} is commonly referred to as the \textit{average treatment
+  effect} (ATE); under structural assumptions, the ATE can be interpreted causally
+\citep{hernanrobins}. A straightforward estimator of the ATE would be
+\begin{equation*}
+  \frac{1}{n} \sum_{i=1}^{n}
+  \left\{
+    \hat{f}_n(1, X_i) - \hat{f}_n(0, X_i)
+  \right\},
+\end{equation*}
+where $\hat{f}_n$ denotes some estimator of the conditional
+expectation $\EE[Y \mid A, X]$. Note that the task of estimating
+$\EE[Y \mid A, X]$ is a standard classification problem, and hence we
+have a large collection of well-studied estimators of at our disposal,
+e.g., logistic regression, random forests or neural networks. Perhaps
+surprisingly, nice performance for estimation of $\EE[Y \mid A, X]$
+does not necessarily translate into nice performance for estimation of
+the target parameter $\Psi(P)$. Basing the estimation procedure on the
+so-called efficient influence function, on the other hand, shifts the
 performance optimization to the target parameter specifically. This
 requires estimating both the exposure distribution \(P(A=a \mid X)\)
 as well as the outcome regression above (potentially using machine
 learning), but then provides the basis for asymptotic linearity and
 efficiency of the resulting estimator and thus inference based on the
-limiting normal distribution.  Thus, estimation based on influence
-functions allow us to use flexible estimates for \(P_0\), to ensure
+limiting normal distribution. Thus, estimation based on influence
+functions allow us to use flexible estimators for \(P_0\), to ensure
 optimal asymptotic behavior of the estimator without strict parametric
 assumptions.
 
+% To estimate \(\psi_0 = \Psi(P_0)\), one needs to estimate \(P_0\), or relevant
+% components of \(P_0\). With an estimator \(\hat{P}_n\), one obtains a so-called plug-in estimator
+% for \(\psi_0\) as \(\hat{\Psi}_n = \Psi( \hat{P}_n)\). To estimate the ATE, one needs specifically
+% to estimate the conditional expectations \(\EE_{P_0}[ Y \mid A=1, X]\) and
+% \(\EE_{P_0}[ Y \mid A=0, X]\). These are simple binary regressions; thus, we can apply logistic
+% regression, or any machine learning algorithm working with binary outcomes. After obtaining such
+% estimators, an estimator for the target parameter can be obtained by taking the empirical average of
+% the difference. However,
 
-
+In this project we focus on the specific problem of estimating the ATE, but the field of targeted
+learning can more broadly be seen as one approach to combine the advantages of machine learning
+(flexible and data-adaptive models with few assumptions) with the goal of more traditional inference
+based statistics, which seeks to establish valid confidence intervals for interpretable parameters.
+This is an important general problem to address if we want to utilize the advances of machine
+learning to answer scientifically interesting questions.
 
 \iffalse Suppose we observe an iid sample \(O_1,\ldots,O_n\),
 \(n\in\mathbb{N}\) of a random variable \(O \in\mathcal{O}\)
@@ -411,9 +423,11 @@ There are many papers and some books about the mathematical background
 of the methods we consider. A very nice review is provided by
 \cite{kennedy2016semiparametric}. %Visual intuition: \cite{fisher2020visually}.
 For causal notation, we follow the framework with counterfactual
-variables \cite{hernanrobins}. Targeted learning is treated quite
-generally in the two books \cite{van2011targeted} and
-\cite{van2018targeted}.
+variables \cite{hernanrobins}. % Targeted learning is treated quite
+% generally in the two books \cite{van2011targeted} and
+% \cite{van2018targeted}.
+We further recommend the introduction (pp. 1--11) by
+\cite{chernozhukov2018double}.
  
 Other more in-depth references on semiparametric efficiency theory for
 the more interested are
