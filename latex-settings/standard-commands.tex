@@ -34,13 +34,10 @@
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 
 % New operators for consistent notation
-\DeclareMathOperator{\E}{\mathbb{E}} % expectation 
 \newcommand{\V}{\mathrm{Var}} % variance
 \newcommand{\measure}[1]{\mathrm{{#1}}} % measure
 % \newcommand{\measure}[1]{\textnormal{\textbf{{#1}}}} % measure
 \newcommand{\m}[1]{\measure{#1}} % measure shortcut
-\renewcommand{\P}{\m{P}} % probability
-\newcommand{\empmeas}{\hat{\mathbb{P}}_n} % empirical measure
 \newcommand{\eqd}{\stackrel{d}{=}} % equality in distribution
 \newcommand{\arrowP}{\xrightarrow{\; \m{P} \;}} % convergence in probability
 \newcommand{\leb}{\lambda} % the Lebesgue measure
@@ -55,3 +52,10 @@
     {{#1^{#2}}_{#4}}
     {{#1^{#2}}_{#4}(#3)}}
 }
+
+% Easily change notation:
+\DeclareMathOperator{\TT}{\Psi} % target parameter
+\newcommand{\lp}{\mathcal{L}_{\P}^2} % shortcut for lp2 space
+\newcommand{\empmeas}{\hat{\mathbb{P}}_n} % empirical measure
+\DeclareMathOperator{\E}{\mathbb{E}} % expectation
+\renewcommand{\P}{\m{P}} % probability

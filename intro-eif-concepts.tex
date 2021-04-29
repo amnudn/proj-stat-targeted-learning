@@ -10,19 +10,6 @@
 % For dark mode:
 \darkmode{0}
 
-% Easily change notation for target parameter:
-\DeclareMathOperator{\TT}{\Psi}
-\newcommand{\lp}{\mathcal{L}_{\P}^2} % shortcut
-
-% Bullet to end example/definition environments
-\newcommand\xqed[1]{%
-  \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
-  \quad\hbox{#1}}
-\newcommand\xend{\xqed{\(\bullet\)}}
-
-% expected value E
-\newcommand{\EE}{\mathbb{E}}
-
 \title{Influence functions and functional derivatives}
 \author{Helene Rytgaard and Anders Munch}
 \date{\today}
@@ -30,71 +17,117 @@
 \begin{document}
 \maketitle
 
+I think it is important to point out that this is background material. They are not supposed to
+understand everything fully and, particularly, they are not supposed to write like this in their
+reports (maybe only be able to grasp it intutively?).
 
+I think it will also be very useful to write a small overview of the note here :-) Perhaps point the
+reader the most important -- and maybe most practical -- results. In a way, it gets most practical
+in Section~\label{sec:estim-based-canon} and then the sections before serve as the (crucial)
+background story.
 
-I think it is important to point out that this is background
-material. They are not supposed to understand everything fully and,
-particularly, they are not supposed to write like this in their
-reports (maybe only be able to grasp it intutively?). 
-
-I think it will also be very useful to write a small overview of the
-note here :-) Perhaps point the reader the most important -- and maybe
-most practical -- results. In a way, it gets most practical in Section
-\ref{sec:estim-inform-bounds} and then the sections before serve as
-the (crucial) background story.
-
-
-Moreover, I think for Section \ref{sec:estim-inform-bounds} we should
+Moreover, I think for Section~\label{sec:estim-based-canon} we should
 focus on the ATE? As part of that particularly present the efficient
 influence function for the ATE.
 
+In this note we provide some motivation for studying influence functions and semiparametric
+efficiency theory, and we briefly introduce the main theoretical concepts needed to study these
+topics. For concreteness we relate the discussion to the specific problem of estimating the average
+treatment effect (ATE), which we introduce in section~\ref{sec:introduction}. In
+section~\ref{sec:motivation} we demonstrate how a naive (non-targeted) estimation procedure can
+fail, and then give some heuristics that indicate a strategy for remedying this; in particular, we
+will see that we would like to be able to talk about the \textit{derivative of a functional} defined
+on a collection of probability measures. Hence in subsection~\ref{sec:funct-deriv} we first make
+some general considerations about how to define a functional derivative, and then zoom in on the
+statistical setting in subsections~\ref{sec:tang-spac-grad} and \ref{sec:prop-canon-grad}. These
+subsections of section~\ref{sec:funct-deriv-can-grad} are slightly technical; this is because the
+goal is to collect mathematically precise definitions and statements from the semiparametric
+literature, which can be hard to find in compact form elsewhere. The main point to take away from
+this section is that, given a statistical model $\mathcal{P}$ and a target parameter
+$\theta = \TT(\P)$ defined through the functional $\TT \colon \mathcal{P} \rightarrow \R$, it is
+possible to define the derivative of $\TT$. This derivative is referred to as the \textit{canonical
+  gradient} and has two important properties (propositions~\ref{prop:eif-no} and \ref{prop:cr}),
+which in turn imply that estimators based on the canonical gradient will asymptotically have
+\textit{vanishing first order bias} and be \textit{efficient}. This is demonstrated in
+section~\ref{sec:estim-based-canon} where we also present the canonical gradient for the ATE
+problem. In section~\ref{sec:further-directions} we very briefly mention further directions and
+related topics that are neglected in this note.
 
-\section{Introduction}
+
+\section{The average treatment effect as a statistical problem}
 \label{sec:introduction}
 
+Many statistical problems are naturally formulated using one or more so-called \textit{nuisance
+  parameters}. A nuisance parameter is a components we need to introduce in our the statistical
+model, which is not of interest in itself, but is nevertheless needed to model the question of
+interest. First of all let us note that by a \textit{statistical problem} we formally mean the tuple
+$(\mathcal{P}, \TT)$, where $\mathcal{P}$ is a collection of probability measures and
+$\TT \colon \mathcal{P} \rightarrow \R$ is a functional defined on this collection of probability
+measures. The definition of $\mathcal{P}$ determines what kind of assumptions we make, while $\TT$
+is determined by our scientific question of interest. 
 
-
-
-Many statistical problems are naturally formulated using one or more
-nuisance parameters; that is, we need to introduce some components in
-the statistical model, which are not of interest in themselves, but
-which nevertheless are needed to model the question of interest. A
-good example of this is the average treatment effect (ATE) which will
-be our running example throughout.
+We are particularly interested in statistical problems with infinite-dimensional nuisance parameter.
+A good example of this the average treatment effect (ATE) which will be our running example
+throughout.
 
 \begin{example}[ATE]
-  Suppose we observed independent and identically distributed (iid)
-  samples \(O_1,\ldots,O_n\), \(n\in\mathbb{N}\) of a random variable
-  \(O \in\mathcal{O}\) distributed according to an unknown
-  distribution function \(P_0\) belonging to a statistical model
-  \(\mathcal{M}\). Each observation consists of \(O= (X, A, Y)\) where
-  \(X\in \R^d\) are covariates, \(A\in \lbrace 0,1\rbrace\) is a
-  binary exposure and \(Y\in\lbrace 0, 1\rbrace\) is a binary outcome
-  variable. The target parameter can be written as functional
-  \fxnote*{jeg skal bruge \(\mathcal{P}\) for a aligne med Anders'
-    notation?}{\(\Psi \, : \, \mathcal{P} \rightarrow \R\)} of
-  distributions \(P\in\mathcal{M}\), for our purposes defined as
-\begin{align}
-  \Psi( \mu_X, f) = \int \big( f( 1, x) - f(0, x) \big) d\mu_X (x), 
-  %\EE_P \big[ \EE_P[ Y \mid A=1, X] - \EE[ Y\mid A=0,X]\big],
-  \label{eq:Psi:ate}
-\end{align}
-where \(f (a, x) = \EE [ Y \mid A=a, X=x]\) and \(\mu_X \) is the
-marginal distribution of \(X\).
-% where \(\EE_P[\cdot]\) denotes the
-% expectation operator under the distribution \(P\in
-% \mathcal{M}\).
-\xend
+  \label{example:aver-treatm-effect}
+  Suppose we observed independent and identically distributed (iid) samples \(O_1,\ldots,O_n\),
+  \(n\in\mathbb{N}\) of a random variable \(O \in\mathcal{O}\) distributed according to an unknown
+  distribution function \(P_0\) belonging to a statistical model \(\mathcal{P}\). Each observation
+  consists of \(O= (X, A, Y)\) where \(X\in \R^d\) are covariates, \(A\in \lbrace 0,1\rbrace\) is a
+  binary exposure and \(Y\in\lbrace 0, 1\rbrace\) is a binary outcome variable. The target parameter
+  can be written as the functional \(\TT_1 \colon \mathcal{P} \rightarrow \R\) on distributions
+  \(P\in\mathcal{P}\), for our purposes defined as
+  \begin{align}
+    \TT_1(\P) = \TT_1( \mu_X, f) = \int \big( f( 1, x) - f(0, x) \big) d\mu_X (x), 
+    \label{eq:Psi:ate}
+  \end{align}
+  where \(f (a, x) = \E_{\P} [ Y \mid A=a, X=x]\) and \(\mu_X \) is the marginal distribution of
+  \(X\), where we suppress the dependence on $\P$. In (\ref{eq:Psi:ate}) we abuse notation and
+  consider $\TT_1$ \textit{both} as a map defined on the full model $\mathcal{P}$ \textit{and} as a
+  map defined on the product space containing $\mu_X$ and $f$. To avoid confusion, we always specify
+  on what domain $\TT_1$ is defined in the following.
 \end{example}
 
-% \fxnote*{introduce briefly}{the ATE ...}
+\fxnote*{ref}{The ATE can be interpreted causally under structural assumptions}. In this note, we do
+not consider these important issues, but merely consider the estimation of the ATE as a statistical
+problem as introduced above, i.e., a tuple $(\mathcal{P}, \TT)$ taken the concrete form given in
+(\ref{eq:Psi:ate}). In this case, the nuisance parameters are the conditional expectation of the
+outcome $Y$ given covariates $X=x$ and treatment $A=a$, which we denoted by $f$, and the marginal
+distribution of $X$; we are not really interested in these functions, but we need them to be able to
+express the ATE.
 
-Statistical problems involving a nuisance parameter often lead to an
-obvious two-step estimation strategy: 1) Estimate the nuisance
-parameter, and then 2) plug this estimate into the expression for the
-target parameter. For the ATE, as an example, 1) consists in
-constructing an estimator $\hat{f}_n$ for the conditional expectation
-$\EE[Y \mid A, X]$ and 2) evaluates
+We note here that we could also have expressed or ``parametrized'' the target parameter differently:
+Using iterated expectations it is straightforward to show both that
+$\TT_1(\mu_X, f) = \TT_2(\mu, \pi)$ and $\TT_1(\mu_X, f) = \TT_3(\mu, f, \pi)$, where
+\begin{align*}
+  \TT_2(\mu, \pi) & := \int 
+                    \left\{
+                    \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)} 
+                    \right\}\diff \mu(y,a,x),\\
+  \TT_3(\mu, f, \pi) &:=
+                       \int 
+                       \left\{
+                       \frac{a\,(y-f(x,1))}{\pi(x)} + f(x,1) - \frac{(1-a)\,(y-f(x,0))}{1-\pi(x)} - f(x,0)
+                       \right\}\diff \mu(y,a,x),
+\end{align*}
+with $\pi(x) := \P(A=1 \mid X=x)$ denoting the conditional probability of treatment given covariate
+status. Hence, using $\TT_2$ the nuisance parameters would instead be the treatment mechanism $\pi$
+and the full measure $\mu$, while using $\TT_3$ the nuisance parameters would be $f$, $\pi$, and
+$\mu$.
+
+Statistical problems involving nuisance parameters often lead to an obvious two-step estimation
+strategy:
+\begin{enumerate}[label=(\arabic*), topsep=0pt]
+\item Estimate the nuisance parameters
+\item Plug the estimates into the expression for target parameter $\TT$
+\end{enumerate}
+For instance, when estimating the ATE and using the parametrization in (\ref{eq:Psi:ate}), we would
+(1)~estimate the conditional outcome $f(x,y) =\E[Y \mid A, X]$ and the marginal distribution $\mu_X$
+with estimators $\hat{f}_n$ and $\hat{\mu}_n$, and (2)~plug these into $\TT_1$. Estimation of
+$\mu_X$ is straightforward using the empirical measure $\empmeas$
+
 \begin{equation*}
   \hat{\theta}_n = \frac{1}{n} \sum_{i=1}^{n}
   \left\{
@@ -103,9 +136,13 @@ $\EE[Y \mid A, X]$ and 2) evaluates
 \end{equation*}
 which yields an estimator for the target parameter.
 
-\subsection{Organization of this note}
-\label{sec:organization}
-
+... Does it really matter which of these parametrizations we pick? And could we not just pick any of
+them and then instead focus on picking a good nuisance estimator? Note that both estimation of $f$
+and $\pi$ are well-studied problems: The first is a regression problem while the second is a
+classification problem, so we have a whole zoo of possible estimators, containing everything from
+linear regression models to random forests, neural networks, etc. Should we not simply focus on
+finding the best possible estimator of, say, $f$, and then just plug that into $\TT_1$? The example
+in the following section demonstrates that some additional thought might be needed.
 
 \section{Motivation}
 \label{sec:motivation}
@@ -126,9 +163,9 @@ into the integral operator
   \end{equation*}
   to obtain an estimate of the cumulative distribution function $F(x)$ at the fixed point
   $x \in \R$. In this setting our nuisance parameter is $f$, and our target parameter is
-  $\theta = \Psi(f)$ with
+  $\theta = \TT(f)$ with
   \begin{equation*}
-    \Psi \colon \mathcal{F} \rightarrow \R, \quad \Psi(f) = \int_{-\infty}^x f(z) \diff z,
+    \TT \colon \mathcal{F} \rightarrow \R, \quad \TT(f) = \int_{-\infty}^x f(z) \diff z,
   \end{equation*}
   where $\mathcal{F}$ is some suitable function space, for instance the collection of continuous
   functions. This procedure results in the target and nuisance estimators given as
@@ -146,7 +183,7 @@ into the integral operator
   instead results in a very rough or undersmoothed
   estimate. Surprisingly, however, the lower panel shows that for
   estimation of the \textit{target parameter}, plugging the
-  undersmoothed estimate into $\Psi$ is superior to using the default,
+  undersmoothed estimate into $\TT$ is superior to using the default,
   optimal bandwidth estimator. \fxnote*{Add explicit bias variance
     decomposition?}{This example is in fact simply enough to allow an
     exact analytic calculation of the bias and variance of the target
@@ -199,7 +236,7 @@ into the integral operator
     + \mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert^2)
     \right\}.
 \end{align*}
-Here we use $\mathrm{D}_{\nu}{\TT}$ to denote some kind of derivate (so be defined shortly) of the
+Here we use $\mathrm{D}_{\nu}{\TT}$ to denote some kind of derivative (so be defined shortly) of the
 map $\nu \mapsto \TT(\P, \nu)$, where $\P$ is held fixed, and \fxnote*{can we make this more
   practical and give an example?}{ $\Vert \blank \Vert$} is a norm defined on the space in which the
 nuisance estimator $\hat{\nu}_n$ takes it values -- typically a function space. Using empirical
@@ -235,7 +272,7 @@ estimator, so this strategy is not applicable in practice \fxnote*{ref
   to undersmoothed HAL}{(though see ...)}. If we want to use flexible
 machine learning estimators (which cannot be expected to converge at
 parametric rate) a better strategy is to design the map to $\TT$ such
-that its partial derivate $\mathrm{D}_{\nu}{\TT}$ equals 0 at
+that its partial derivative $\mathrm{D}_{\nu}{\TT}$ equals 0 at
 $\nu$. This would make the second term in (\ref{eq:target-decom})
 vanish, and we would be able to estimate the target parameter $\theta$
 at parametric rate, while still using a nuisance estimator converging
@@ -244,23 +281,29 @@ only at rate $n^{-1/4}$.
 In the next section we formally consider how to define a functional
 derivative, and then indicate how this can be used \fxnote*{jeg er
   dum, det forstår jeg ikke? -> parametrization}{to design $\TT$} with
-partial derivate equal to 0. In section~\ref{sec:estim-inform-bounds}
+partial derivative equal to 0. In section~\ref{sec:estim-based-canon}
 we show how these results in addition allow us to analyze and
 construct \textit{efficient} estimators of $\theta$, that is,
 estimators with lowest possible asymptotic variance.
 
-\section{Functional derivatives and geometry}
-\label{sec:funct-deriv-geom}
+\section{Functional derivatives and the canonical gradient}
+\label{sec:funct-deriv-can-grad}
+In this section...
+
+\subsection{Functional derivatives}
+\label{sec:funct-deriv}
+
+
 
 The most straightforward form of functional differentiabiliy is the generalization of the
 \textit{directional derivative} of multivariate calculus. This is known as Gâteaux differentiability
 and defined as follows.
 
-\begin{definition}[Gâteaux derivate]
+\begin{definition}[Gâteaux derivative]
   Let $\mathcal{M}$ and $\mathcal{Y}$ be a normed real vector spaces,
   $\TT \colon \mathcal{M} \rightarrow \mathcal{Y}$ a map, and $x \in \mathcal{M}$ a point in the
   domain. If there exists a linear, continuous operator
-  $\dot{\TT}_x \colon \mathcal{X} \rightarrow \mathcal{Y} $ such that for all $h \in \mathcal{X}$
+  $\dot{\TT}_x \colon \mathcal{M} \rightarrow \mathcal{Y} $ such that for all $h \in \mathcal{M}$
   \begin{equation*}
     \left\Vert
       \TT(x + \epsilon h) - \TT(x) - \dot{\TT}_x(\epsilon h)
@@ -312,19 +355,19 @@ differentiability of such functions. Similarly, to get a richer theory in the fu
 stronger notion of differentiability is needed. For our setting, a particular useful concept is
 \textit{Hadamard} differentiability.
 
-\begin{definition}[Hadamard derivate]
+\begin{definition}[Hadamard derivative]
   \label{def:hadamard-diff}
   Let $\mathcal{M}$ and $\mathcal{Y}$ be a normed real vector spaces,
   $\TT \colon \mathcal{M} \rightarrow \mathcal{Y}$ a map, and $x \in \mathcal{M}$ a point in the
   domain. If there exists a linear, continuous operator
-  $\dot{\TT}_x \colon \mathcal{X} \rightarrow \mathcal{Y} $ such that
+  $\dot{\TT}_x \colon \mathcal{M} \rightarrow \mathcal{Y} $ such that
   \begin{equation*}
     \left\Vert
       \frac{\TT(x + \epsilon_n h_n) - \TT(x)}{\epsilon_n} - \dot{\TT}_x(h)
     \right\Vert_{\mathcal{Y}} \longrightarrow 0,
   \end{equation*}
-  for any $\epsilon_n \rightarrow 0$ and $\{h_n\}_{n \in \N} \subset \mathcal{X}$ with
-  $h_n \rightarrow h \in \mathcal{X}$, we say that $\TT$ is Hadamard differentiable at $x$ and call
+  for any $\epsilon_n \rightarrow 0$ and $\{h_n\}_{n \in \N} \subset \mathcal{M}$ with
+  $h_n \rightarrow h \in \mathcal{M}$, we say that $\TT$ is Hadamard differentiable at $x$ and call
   the operator $\dot{\TT}_x$ the Hadamard derivative of $\TT$ at $x$.
 \end{definition}
 
@@ -410,7 +453,9 @@ measures dominated by $\mu$ equipped with the variational norm
 % following that $\mathcal{M}_{\mu}$ is equipped with norm and vector space structure inherited from
 % $\mathcal{L}_{\mu}^2$ through $s$ defined in (\ref{eq:iso-map}).
 
-\subsection{New section? e.g. Tangent spaces and canonical gradient}
+\subsection{Tangent spaces and gradients for statistical problems}
+\label{sec:tang-spac-grad}
+
 
 And, start with motivation? Very interested in tangent space +
 canonical gradient + information bound, etc.
@@ -422,7 +467,7 @@ estimation problem, we are now ready to introduce so-called
 \textit{tangent spaces} for the model $\mathcal{P}$, and particularly,
 a specific element of closure of the linear space of the tangent space
 called the \textit{canonical gradient}, or, as we will refer to it in
-Section \ref{sec:estim-inform-bounds}, the \textit{efficient influence
+Section \ref{sec:estim-based-canon}, the \textit{efficient influence
   function}. The latter is central component in our analysis of the
 statistical estimation problem, representing the optimal asymptotic
 variance (Lemma ??) + debiasing? --> jeg skal lige forstå slutningen
@@ -466,9 +511,6 @@ all such paths. With a differentiable structure on the collection $\mathcal{P}$ 
     mentioned, I think we need motivation, c.f., above
     :)}{\textit{canonical gradient of the statistical problem}}.
 \end{definition}
-
-% \subsection{Representations of tangent spaces and canonical gradients}
-% \label{sec:repr-tang-space}
 
 The definitions of the tangent space $\dot{\mathcal{P}}_{\P}$ and the gradient $\dot{\TT}_{\P}$
 above capture the intuitive meaning of these concepts as generalizations of well-known concepts from
@@ -539,19 +581,15 @@ useful representation of the canonical gradient.
 \end{proposition}
 
 \begin{proof}
-  The \fxnote*{introduce or mention before}{chain rule for Hadamard
-    derivative} implies that
-  $\partial_0 \TT(\P_{\epsilon}) = \dot{\TT}_{\P}(\partial_0
-  \P_{\epsilon})$, and then the representation given by
-  proposition~\ref{prop:repr-tang-spac} implies that this expression
-  equals $\Phi_{\P}(\dot{\ell}_0)$ for some continuous linear
-  functional $\Phi_{\P} \colon \Gamma_{\P} \rightarrow \R$. As
-  $\Gamma_{\P}$ is a closed subspace of a Hilbert space it is itself a
-  Hilbert space, and hence Riesz representation theorem (for Hilbert
-  spaces) gives the existence of a unique element
-  $\phi_{\P} \in \Gamma_{\P}$ such that
-  $\Phi_{\P}(\dot{\ell}_0) = \langle\phi_{\P}, \dot{\ell}_0\rangle$
-  for all elements $\dot{\ell}_0 \in \Gamma_{\P}$.
+  The \fxnote*{Combine this and next remark into a proof sketch}{chain rule for Hadamard derivative}
+  implies that $\partial_0 \TT(\P_{\epsilon}) = \dot{\TT}_{\P}(\partial_0 \P_{\epsilon})$, and then
+  the representation given by proposition~\ref{prop:repr-tang-spac} implies that this expression
+  equals $\Phi_{\P}(\dot{\ell}_0)$ for some continuous linear functional
+  $\Phi_{\P} \colon \Gamma_{\P} \rightarrow \R$. As $\Gamma_{\P}$ is a closed subspace of a Hilbert
+  space it is itself a Hilbert space, and hence Riesz representation theorem (for Hilbert spaces)
+  gives the existence of a unique element $\phi_{\P} \in \Gamma_{\P}$ such that
+  $\Phi_{\P}(\dot{\ell}_0) = \langle\phi_{\P}, \dot{\ell}_0\rangle$ for all elements
+  $\dot{\ell}_0 \in \Gamma_{\P}$.
 \end{proof}
 
 By the chain rule of ordinary multivariate calculus we have for a differentiable function
@@ -572,7 +610,7 @@ of the map $\TT$ tangential to $\Gamma_{\P}$ \citep[A.5]{bickel1993efficient}.
 
 As with the identification $\dot{\mathcal{P}}_{\P}= \Gamma_{\P}$ we
 also \fxnote*{}{identify} the function $\phi_{\P}$ with the canonical
-gradient $\dot{\Psi}_{\P}$. Note that if $\Gamma_{\P}$ is a proper
+gradient $\dot{\TT}_{\P}$. Note that if $\Gamma_{\P}$ is a proper
 subset of $\lp$ there can be several functions $\tilde{\phi} \in \lp$
 fulfilling condition (\ref{eq:2}); we refer to such functions as
 \textit{gradients}. It follows from standard Hilbert space theory that
@@ -582,12 +620,10 @@ $ \phi_{\P} = \Pi(\tilde{\phi} \mid \Gamma_{\P})$. This geometric
 representation of the tangent space and the gradient is very useful.
 
 \subsection{Properties of the canonical gradient}
-
-
-% \subsection{Debiasing and efficiency}
+\label{sec:prop-canon-grad}
 
 Seems useful to distinguish this part from the remainder of Section
-\ref{sec:funct-deriv-geom}, but I may not be right about this. I am
+\ref{sec:funct-deriv-can-grad}, but I may not be right about this. I am
 not sure I understood this result yet, but seems nice :)
 
 \fxnote*{wait, is the decomposition needed for this result, or can we
@@ -597,6 +633,7 @@ not sure I understood this result yet, but seems nice :)
   following results.}
 
 \begin{proposition}
+  \label{prop:eif-no}
   Let $(\mathcal{P}, \TT)$ be a statistical problem with $\mathcal{P}$ dominated by $\mu$ and such
   that $\TT(\P) = \P[\phi(Z, \nu(\P))]$ for some function
   $\phi\colon \mathcal{Z} \times \mathcal{V} \rightarrow \R$. If $\phi(\blank, \nu(\P))$ is the
@@ -607,6 +644,9 @@ not sure I understood this result yet, but seems nice :)
   $\partial_0 \P[\phi(\blank, \nu(\P) + \epsilon h)] = 0$ for all
   $h \in \dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$.
 \end{proposition}
+
+\fxnote*{Maybe simplify this simply to the statement that the EIF fulfills the N-O condition and
+  then have the N-O as a proper def earlier? }{}
 
 \begin{proof}
   Under regularity conditions that allow us to interchange integration and differentation in the
@@ -646,7 +686,7 @@ not sure I understood this result yet, but seems nice :)
   $\phi(\blank, \nu(\P)) \in \Gamma_{\P}$; hence, \fxnote*{I think
     this must be correct}{any gradient for the statistical problem
     will fulfill the Neyman orthogonality condition} (under regularity
-  conditions). \xend
+  conditions).
 \end{remark}
 
 \fxnote*{I sort of feel like moving this to the next
@@ -677,10 +717,8 @@ are not estimable at this rate themselves. \fxnote*{What is the
 \end{proof}
  
 
-
 \section{Estimation based on the canonical gradient}
-\label{sec:estim-inform-bounds}
-
+\label{sec:estim-based-canon}
 
 \fxnote*{proposed change to section title here}{If you agree on the
   above (moving the debiasing remark down)}, I think we should return
@@ -704,10 +742,30 @@ provide \textit{efficient} estimators.
 \fxnote*{briefly to this}{
   \begin{itemize}
   \item RAL estimators and IFs
-  \item Information bounds
   \item Connection to canonical gradient
   \end{itemize}
 }
+
+\section{Further directions}
+\label{sec:further-directions}
+
+\begin{itemize}
+\item \textit{Semi}-parametric inference.  
+\item Undersmoothing
+\item Empirical process theory (or/versus sample splitting)
+\item Nuisance estimators (and their rate of convergence)
+\item Other/further topic on functional derivatives / derivatives of operators:
+  \begin{itemize}
+  \item Functional delta method 
+  \item Analysis of estimator
+  \end{itemize}
+\item Concrete strategies for finding estimators:
+  \begin{itemize}
+  \item Debiasing / solving the (efficient) score equation
+  \item TMLE
+  \item ...?
+  \end{itemize}
+\end{itemize}
 
 \bibliography{./latex-settings/default-bib.bib}
 
