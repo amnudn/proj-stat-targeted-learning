@@ -17,18 +17,11 @@
 \begin{document}
 \maketitle
 
-I think it is important to point out that this is background material. They are not supposed to
-understand everything fully and, particularly, they are not supposed to write like this in their
-reports (maybe only be able to grasp it intutively?).
-
-I think it will also be very useful to write a small overview of the note here :-) Perhaps point the
-reader the most important -- and maybe most practical -- results. In a way, it gets most practical
-in Section~\label{sec:estim-based-canon} and then the sections before serve as the (crucial)
-background story.
-
-Moreover, I think for Section~\label{sec:estim-based-canon} we should
-focus on the ATE? As part of that particularly present the efficient
-influence function for the ATE.
+\fxnote[inline, nomargin]{I think it is important to point out that this is background material.
+  They are not supposed to understand everything fully and, particularly, they are not supposed to
+  write like this in their reports (maybe only be able to grasp it intutively?). Moreover, I think
+  for the last section we should focus on the ATE? As part of that particularly
+  present the efficient influence function for the ATE.}
 
 In this note we provide some motivation for studying influence functions and semiparametric
 efficiency theory, and we briefly introduce the main theoretical concepts needed to study these
@@ -77,17 +70,16 @@ throughout.
   distribution function \(P_0\) belonging to a statistical model \(\mathcal{P}\). Each observation
   consists of \(O= (X, A, Y)\) where \(X\in \R^d\) are covariates, \(A\in \lbrace 0,1\rbrace\) is a
   binary exposure and \(Y\in\lbrace 0, 1\rbrace\) is a binary outcome variable. The target parameter
-  can be written as the functional \(\TT_1 \colon \mathcal{P} \rightarrow \R\) on distributions
+  can be written as the functional \(\TT \colon \mathcal{P} \rightarrow \R\) on distributions
   \(P\in\mathcal{P}\), for our purposes defined as
   \begin{align}
-    \TT_1(\P) = \TT_1( \mu_X, f) = \int \big( f( 1, x) - f(0, x) \big) d\mu_X (x), 
+    \TT(\P) = \TT_1( \mu_X, f) = \int \big( f( 1, x) - f(0, x) \big) d\mu_X (x), 
     \label{eq:Psi:ate}
   \end{align}
   where \(f (a, x) = \E_{\P} [ Y \mid A=a, X=x]\) and \(\mu_X \) is the marginal distribution of
-  \(X\), where we suppress the dependence on $\P$. In (\ref{eq:Psi:ate}) we abuse notation and
-  consider $\TT_1$ \textit{both} as a map defined on the full model $\mathcal{P}$ \textit{and} as a
-  map defined on the product space containing $\mu_X$ and $f$. To avoid confusion, we always specify
-  on what domain $\TT_1$ is defined in the following.
+  \(X\), where we suppress the dependence on $\P$. Here we have used a subscript to differentiate
+  between the functional $\TT$ considered as a map defined on $\mathcal{P}$ and the functional
+  $\TT_1$ considered as a map defined on a product space containing $(\mu_X, f)$.
 \end{example}
 
 \fxnote*{ref}{The ATE can be interpreted causally under structural assumptions}. In this note, we do
@@ -99,8 +91,8 @@ distribution of $X$; we are not really interested in these functions, but we nee
 express the ATE.
 
 We note here that we could also have expressed or ``parametrized'' the target parameter differently:
-Using iterated expectations it is straightforward to show both that
-$\TT_1(\mu_X, f) = \TT_2(\mu, \pi)$ and $\TT_1(\mu_X, f) = \TT_3(\mu, f, \pi)$, where
+Using iterated expectations it is straightforward to show both that $\TT(\P) = \TT_2(\mu, \pi)$ and
+$\TT(\P) = \TT_3(\mu, f, \pi)$, where
 \begin{align*}
   \TT_2(\mu, \pi) & := \int 
                     \left\{
@@ -115,34 +107,58 @@ $\TT_1(\mu_X, f) = \TT_2(\mu, \pi)$ and $\TT_1(\mu_X, f) = \TT_3(\mu, f, \pi)$, 
 with $\pi(x) := \P(A=1 \mid X=x)$ denoting the conditional probability of treatment given covariate
 status. Hence, using $\TT_2$ the nuisance parameters would instead be the treatment mechanism $\pi$
 and the full measure $\mu$, while using $\TT_3$ the nuisance parameters would be $f$, $\pi$, and
-$\mu$.
+$\mu$. For later reference we define
+\begin{equation}
+  \label{eq:ate-pars}
+  \begin{gathered}
+    \phi_1(x; f) := f(1,x) - f(0,x), \quad
+    \phi_2(y,a,x; \pi) := \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)},\quad \text{and}  \\
+    \phi_3(y,a,x; f, \pi) := \phi_2(y,a,x) + \phi_1(x) - \frac{a\,f(1,x)}{\pi(x)} +
+    \frac{(1-a)\,f(0,x)}{1-\pi(x)},
+  \end{gathered}
+\end{equation}
+% \begin{equation}
+%   \label{eq:ate-pars}
+%   \begin{split}
+%     & \phi_1(x) :=   f(1,x) - f(0,x) \\
+%     & \phi_2(y,a,x) :=   \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)} \\
+%     & \phi_3(y,a,x) := \phi_2(y,a,x) + \phi_1(x) - \frac{a\,f(1,x)}{\pi(x)} +
+%     \frac{(1-a)\,f(0,x)}{1-\pi(x)},
+%   \end{split}
+% \end{equation}
+such that we can write $\TT(\P) = \P[\phi_1(O, f)] = \P[\phi_2(O, \pi)] = \P[\phi_3(O, f, \pi)]$.
 
-Statistical problems involving nuisance parameters often lead to an obvious two-step estimation
-strategy:
+Statistical problems involving nuisance parameters lead to an obvious two-step estimation strategy:
 \begin{enumerate}[label=(\arabic*), topsep=0pt]
-\item Estimate the nuisance parameters
-\item Plug the estimates into the expression for target parameter $\TT$
+\item Estimate the nuisance parameters.
+\item Plug the estimates into the target parameter functional $\TT$.
 \end{enumerate}
 For instance, when estimating the ATE and using the parametrization in (\ref{eq:Psi:ate}), we would
-(1)~estimate the conditional outcome $f(x,y) =\E[Y \mid A, X]$ and the marginal distribution $\mu_X$
-with estimators $\hat{f}_n$ and $\hat{\mu}_n$, and (2)~plug these into $\TT_1$. Estimation of
-$\mu_X$ is straightforward using the empirical measure $\empmeas$
-
-\begin{equation*}
-  \hat{\theta}_n = \frac{1}{n} \sum_{i=1}^{n}
+(1)~estimate the conditional outcome $f(x,y) =\E[Y \mid A=a, X=x]$ and the marginal distribution
+$\mu_X$ with estimators $\hat{f}_n$ and $\hat{\mu}_n$, and then (2)~plug these into $\TT_1$.
+Estimation of $\mu_X$ is straightforward using the empirical measure $\empmeas$, which gives the
+estimator
+\begin{equation}
+  \label{eq:naiv-est}
+  \hat{\theta}_n = \TT_1(\empmeas, \hat{f}_n) 
+  = \frac{1}{n} \sum_{i=1}^{n} 
   \left\{
     \hat{f}_n(1, X_i) - \hat{f}_n(0, X_i)
   \right\},
-\end{equation*}
-which yields an estimator for the target parameter.
+\end{equation}
+where $\hat{f}_n$ is some estimated regression function, for instance obtained by linear regression.
+Using instead the parametrization given by $\TT_2$ would demand estimation of $\pi$ in step (1),
+giving the estimator $\TT_2(\empmeas, \hat{\pi}_n) $, while using $\TT_3$ would demand estimation of
+both $f$ and $\pi$, giving the estimator $\TT_3(\empmeas, \hat{f}_n, \hat{\pi}_n) $.
 
-... Does it really matter which of these parametrizations we pick? And could we not just pick any of
-them and then instead focus on picking a good nuisance estimator? Note that both estimation of $f$
-and $\pi$ are well-studied problems: The first is a regression problem while the second is a
+Now, does it really matter which of these parametrizations we pick? And could we not just choose any
+of them and then instead focus on picking a good nuisance estimator? Note that both estimation of
+$f$ and $\pi$ are well-studied problems: The first is a regression problem while the second is a
 classification problem, so we have a whole zoo of possible estimators, containing everything from
 linear regression models to random forests, neural networks, etc. Should we not simply focus on
 finding the best possible estimator of, say, $f$, and then just plug that into $\TT_1$? The example
-in the following section demonstrates that some additional thought might be needed.
+in the following section \fxnote*{better formulation...}{demonstrates that some additional thought
+  might be needed}.
 
 \section{Motivation}
 \label{sec:motivation}
@@ -150,14 +166,15 @@ in the following section demonstrates that some additional thought might be need
 
 %\begin{example}
 %  \label{example:kernel-cdf}
-To motivate our theoretical considerations on estimation of the ATE in
-this note, consider the following simple toy example. Given $n$
-samples $X_i \in \R$ from some unknown distribution with cumulative
-distribution function $F$, we want to estimate $F(x) = \P(X \leq x)$.
-Let us say that we are willing to assume that $F$ has a continuous
-Lebesgue-density $f$. Then one estimation strategy would be to first
-use a kernel density estimator to estimate $f$, and then plug this
-into the integral operator
+To motivate our theoretical considerations on estimation of the ATE in this note, consider the
+following simple toy example.
+
+\begin{example}[Integrated kernel]
+  \label{example:kernel-int}
+  Given $n$ samples $X_i \in \R$ from some unknown distribution with cumulative distribution
+  function $F$, we want to estimate $F(x) = \P(X \leq x)$. Let us say that we are willing to assume
+  that $F$ has a continuous Lebesgue-density $f$. Then one estimation strategy would be to first use
+  a kernel density estimator to estimate $f$, and then plug this into the integral operator
   \begin{equation*}
     f \longmapsto \int_{-\infty}^x f(z) \diff z,
   \end{equation*}
@@ -174,23 +191,11 @@ into the integral operator
     \quad \text{and} \quad
     \hat{f}_n(z) = \empmeas[k_h(z, \blank)],
   \end{equation}
-  for some kernel function $k_h$ with bandwidth $h_n$. It is
-  well-known that the optimal choice of bandwidth $h_n$ is
-  $h_n \propto n^{-1/5}$ \citep{wasserman2006all}, so this would also
-  be the natural choice in our case; indeed, the upper panel of
-  figure~\ref{fig:kernel-undersmoothed} demonstrates how this choice
-  of bandwidth is superior to the choice $h_n \propto n^{-1/2}$, which
-  instead results in a very rough or undersmoothed
-  estimate. Surprisingly, however, the lower panel shows that for
-  estimation of the \textit{target parameter}, plugging the
-  undersmoothed estimate into $\TT$ is superior to using the default,
-  optimal bandwidth estimator. \fxnote*{Add explicit bias variance
-    decomposition?}{This example is in fact simply enough to allow an
-    exact analytic calculation of the bias and variance of the target
-    parameter, and hence it is fairly straightforward to
-    mathematically prove the behavior suggested by
-    figure~\ref{fig:kernel-undersmoothed}.}  %\xend
-
+  for some kernel function $k_h$ with bandwidth $h_n$. It is well-known that the optimal choice of
+  bandwidth $h_n$ is $h_n \propto n^{-1/5}$ \citep{wasserman2006all}, so this would also be the
+  natural choice in our case; indeed, the upper panel of figure~\ref{fig:kernel-undersmoothed}
+  demonstrates how this choice of bandwidth is superior to the choice $h_n \propto n^{-1/2}$, which
+  instead results in a very rough or undersmoothed estimate.
   \begin{figure}[h]
     \centerline{\includegraphics[width=.75\linewidth]{./figures/kernel-undersmooth-viz-presentation-3.pdf}}
     \caption{Simulation illustrating the problem for the plug-in approach. The top 2 rows give
@@ -200,95 +205,135 @@ into the integral operator
       based on 1000 Monte Carlo samples.}
     \label{fig:kernel-undersmoothed}
   \end{figure}
-%\end{example}
+  Surprisingly, however, the lower panel shows that for estimation of the \textit{target parameter},
+  plugging the undersmoothed estimate into $\TT$ is superior to using the default, optimal bandwidth
+  estimator. \fxnote*{Add explicit bias variance decomposition?}{This example is in fact simply
+    enough to allow an exact analytic calculation of the bias and variance of the target parameter,
+    and hence it is fairly straightforward to mathematically prove the behavior suggested by
+    figure~\ref{fig:kernel-undersmoothed}.}
+\end{example}
 
-  Though the above example is somewhat silly because we already have
-  an obvious estimator of the parameter of interest in this situation,
-  it clearly illustrates that the modus operandi outlined in the
-  two-step estimation procedure can be problematic. With this example
-  in mind, we should not be too confident about our ATE estimator. In
-  fact, with a bit more work it can be showed that similar phenomenon
-  happens if we use \fxnote*{todo}{the first estimator suggested
-    above}.
 
-  The issue from the toy example can be understood more generally by
-  considering the decomposition
+Though the above example is somewhat silly because we already have an obvious estimator of the
+parameter of interest in this situation, it clearly illustrates that the modus operandi outlined in
+the two-step estimation procedure in the previous section can be problematic. With this example in
+mind, we should maybe not be too confident about the first ATE estimator we considered
+in~(\ref{eq:naiv-est}). In fact, with a bit more work it can be showed that the same phenomenon as
+illustrated in figure~\ref{fig:kernel-undersmoothed} appears if we use a kernel-based regression
+estimator in~(\ref{eq:naiv-est}). 
+
+The issue from the toy example can be understood more generally by considering a target parameter
+$\TT$ that can be parametrized as $\TT(\P) = \TT_0(\P, \nu) = \P[\phi(O, \nu)]$ for some function
+$\phi(\blank, \nu)$ defined on the sample space $\mathcal{O}$ that depend on the nuisance parameter
+$\nu$. (Many target parameters can be written on this form; in particular, as shown above, the ATE
+can be written on this form in at least three different ways.) Plugging the nuisance estimators
+$\empmeas$ and $\hat{\nu}_n$ into this expression gives the estimator
+$\hat{\theta}_n = \TT_0(\empmeas, \hat{\nu}_n)$. To analyze the (asymptotic) behavior of this
+estimator we would typically consider the expression
+\begin{equation*}
+  \sqrt{n}
+  \left(
+    \hat{\theta}_n - \theta
+  \right)
+  =  \sqrt{n}
+  \left(
+    \TT_0(\empmeas,\hat{\nu}_n) - \TT_0(\P,\nu)
+  \right) =
+  \sqrt{n}
+  \left(
+    \empmeas[\phi(O, \hat{\nu}_n)] -
+    \P[\phi(O, \nu)]
+  \right),
+\end{equation*}
+which can be further expanded as
 \begin{align*}
   \sqrt{n}
   \left(
   \hat{\theta}_n - \theta
-  \right)
-  & =  \sqrt{n}
-    \left(
-    \TT(\empmeas,\hat{\nu}_n) - \TT(\P,\nu)
-    \right) \\
-  & =
-    \G{\phi( \blank, \hat{\nu}_n)}
-    + \sqrt{n}
-    \left\{
-    \TT(\P,\hat{\nu}_n) - \TT(\P,\nu)
-    \right\}
-  \\
-  & = \G{\phi( \blank, \hat{\nu}_n)}
-    + \sqrt{n}
-    \left\{
-    \mathrm{D}_{\nu}{\TT}(\hat{\nu}_n - \nu)
-    + \mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert^2)
-    \right\}.
+  \right) & =
+            \G{\phi( O, \hat{\nu}_n)}
+            + \sqrt{n}
+            \left\{
+            \TT_0(\P,\hat{\nu}_n) - \TT_0(\P,\nu)
+            \right\},
+  % \\
+  %         & = \G{\phi( \blank, \hat{\nu}_n)}
+  %           + \sqrt{n}
+  %           \left\{
+  %           \mathrm{D}_{\nu}{\TT}(\hat{\nu}_n - \nu)
+  %           + \mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert^2)
+  %           \right\},
 \end{align*}
-Here we use $\mathrm{D}_{\nu}{\TT}$ to denote some kind of derivative (so be defined shortly) of the
-map $\nu \mapsto \TT(\P, \nu)$, where $\P$ is held fixed, and \fxnote*{can we make this more
-  practical and give an example?}{ $\Vert \blank \Vert$} is a norm defined on the space in which the
-nuisance estimator $\hat{\nu}_n$ takes it values -- typically a function space. Using empirical
-process theory or sample spitting, it can in many cases be shown that \fxnote*{\(\mathbb{G}_n\)
-  needs to be defined}{}$\G{\phi( \blank, \hat{\nu}_n)} = \G{\phi( \blank, \nu)} + \smallO_{\P}(1)$
-\citep{van1996weak,van2000asymptotic,chernozhukov2018double}. Furthermore, if we assume that
-$\hat{\nu}_n$ can be estimated at rate $n^{-1/4}$, meaning that \fxnote*{\(\smallO_{\P}\) needs to
-  be defined}{$\Vert \hat{\nu}_n - \nu \Vert = \smallO_{\P}(n^{-1/4})$} , the decomposition becomes
+where $\mathbb{G}_n$ denotes the empirical process defined as
+$\mathbb{G}_n := \sqrt{n}(\empmeas - \P)$. Let us now consider some heuristic arguments: If we could
+somehow make sense of a Taylor expansion of the function $\nu \mapsto \TT_0(\P, \nu)$ we could
+further expand the above as
 \begin{equation}
   \label{eq:target-decom}
   \sqrt{n}
   \left(
     \hat{\theta}_n - \theta
   \right)
-  = \G{\phi( \blank, \nu)}
-  + \mathrm{D}_{\nu}{\TT}
-  \left(
-    \sqrt{n}(\hat{\nu}_n - \nu)
-  \right)
-  + \smallO_{\P}(1),
+  = \G{\phi( O, \hat{\nu}_n)}
+  + \mathrm{D_{\nu}{\TT_0}}{ \left[
+      \sqrt{n}(\hat{\nu}_n - \nu)
+    \right]}
+  + 
+  \mathcal{O}_{\P}(\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2),
 \end{equation}
-where we use that a derivative $\dot{\TT}_{\nu}$ should be linear. The
-first term of this expression is controlled by reference to the
-central limit theorem, but unless we are able to estimate $\nu$ at the
-improved parametric rate of $n^{-1/2}$, we cannot hope to control the
-second term. Indeed, the fact that the default kernel estimator from
-the example converges \fxnote*{check}{at rate $n^{-2/5}$} is what
-ruins the asymptotic behavior of the target estimator.  In the example
-we showed that the target estimator could be improved by using a
-suitably undersmoothed density estimator. However, we would not in
-general know how to choose a properly undersmoothed nuisance
-estimator, so this strategy is not applicable in practice \fxnote*{ref
-  to undersmoothed HAL}{(though see ...)}. If we want to use flexible
-machine learning estimators (which cannot be expected to converge at
-parametric rate) a better strategy is to design the map to $\TT$ such
-that its partial derivative $\mathrm{D}_{\nu}{\TT}$ equals 0 at
-$\nu$. This would make the second term in (\ref{eq:target-decom})
-vanish, and we would be able to estimate the target parameter $\theta$
-at parametric rate, while still using a nuisance estimator converging
-only at rate $n^{-1/4}$.
+and where $\Vert \blank \Vert_{\mathcal{V}}$ is some norm defined on the space where the nuisance
+parameter $\nu$ takes it values; this would typically be a function space, so the norm could, for
+instance, be the $\mathcal{L}^2$-norm or the supremum-norm. The asymptotic analysis of each of the
+three components in (\ref{eq:target-decom}) requires some fairly advanced mathematical tools, and in
+this note we only focus on the second part. For the other two components we simply note that in many
+cases empirical process theory or sample splitting can be used to show that
+$\G{\phi(O, \hat{\nu}_n)} = \G{\phi(O, \nu)} + \smallO_{\P}(\sqrt{n})$, and that
+$\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}} = \smallO_{\P}(n^{-1/4})$ \fxnote*{is this
+  correct?}{has been established for several machine learning estimators} under the right conditions
+(see section~\ref{sec:further-directions} for a few additional comments on this). Assuming this two
+equations to hold, (\ref{eq:target-decom}) simplifies to
+\begin{equation*}
+  \sqrt{n}
+  \left(
+    \hat{\theta}_n - \theta
+  \right)
+  = \G{\phi( O, \nu)}
+  + \mathrm{D_{\nu}{\TT_0}}{ \left[
+      \sqrt{n}(\hat{\nu}_n - \nu)
+    \right]}
+  + 
+  \smallO_{\P}(1).  
+\end{equation*}
+The first component is now straightforward to analyze using the central limit theorem, as it is a
+sum of iid.\ zero-mean variables. This term contributes the main part of the variance of the
+asymptotic behavior of $\hat{\theta}_n$. The second component can contribute with additional
+variance, if the $\hat{\nu}_n$ converges at $n^{-1/2}$-rate; however, if $\hat{\nu}_n$ converges at
+a slower rate, the main issue with the second component becomes bias. Indeed, as the default kernel
+estimator converges \fxnote*{check}{at rate $n^{-2/5}$}, this component is exactly what ruined the
+target estimator in example~\ref{example:kernel-int}. If we want to use flexible, non-parametric
+nuisance estimators we can in general not hope to be able to have these converge at the parametric
+$n^{-1/2}$-rate (for instance, the $n^{-2/5}$-rate is the best possible for estimation of twice
+times continuously differentiable densities \citep[chp.~24]{van2000asymptotic}). Hence we cannot
+hope to achieve $n^{-1/2}$-rate inference about $\theta$ by optimizing the nuisance parameter, and
+thus we instead turn to the derivative $\mathrm{D_{\nu}{\TT_0}}$. In particular, if we can design
+$\TT_0$ in such a way that $\mathrm{D_{\nu}{\TT_0}} = 0$, we would get rid of this problematic bias
+term altogether.
 
-In the next section we formally consider how to define a functional
-derivative, and then indicate how this can be used \fxnote*{jeg er
-  dum, det forstår jeg ikke? -> parametrization}{to design $\TT$} with
-partial derivative equal to 0. In section~\ref{sec:estim-based-canon}
-we show how these results in addition allow us to analyze and
-construct \textit{efficient} estimators of $\theta$, that is,
-estimators with lowest possible asymptotic variance.
+This goal is our motivation for studying functional derivatives in the next section. As mentioned,
+we will see that this study will also allows to analyze how efficient a given statistical problem
+can be estimated.
 
 \section{Functional derivatives and the canonical gradient}
 \label{sec:funct-deriv-can-grad}
-In this section...
+
+For infinite-dimensional spaces, unlike for $\R^d$, there are several sensible and non-equivalent
+ways of defining a derivative. In addition, again unlike for $\R^d$, for such spaces there are
+typically several, non-equivalent norms, which in turn determine which kind of functionals and
+operators are differentiable according to what definition. We do not consider these issues in much
+detail but only consider two types of derivatives, namely Gâteaux and Hadamard. We then consider
+some slight generalizations of the latter, and then, in subsection~\ref{sec:tang-spac-grad},
+describe in greater detail how Hadamard derivatives for a statistical problem can be represented;
+this allow us to derive some useful properties in subsection~\ref{sec:prop-canon-grad}.
 
 \subsection{Functional derivatives}
 \label{sec:funct-deriv}
@@ -327,32 +372,32 @@ derived as the ordinary derivative of the real-valued function
 $\epsilon \mapsto \TT(x + \epsilon h)$ evaluated at 0, i.e.,
 \begin{equation}
   \label{eq:gateaux-prop}
-  \dot{\TT}_x(h) = \partial_0 \TT(x + \epsilon h)
-  := \frac{\partial}{\partial \epsilon} \bigg \vert_{\epsilon=0} \TT(x + \epsilon h).
+  \dot{\TT}_x(h) = \partial_0{\TT(x + \epsilon h)}
+  := \frac{\partial}{\partial \epsilon} \bigg \vert_{\epsilon=0}{\TT(x + \epsilon h)}.
 \end{equation}
-To simplify notation in the following we will use the notation
-\fxnote*{hely would like to change this
-  notation}{$\partial_0f(\epsilon)$} for maps $f$ with a real domain
-as just defined in (\ref{eq:gateaux-prop}). Gâteaux differentiability
-is used by \cite{chernozhukov2018double} to define \textit{Neyman
-  orthogonality}: A function \fxnote*{define the sample space
-  $\mathcal{Z}$}{$\phi \colon \mathcal{Z} \times
-  \mathcal{V}\rightarrow \R$} fulfills the Neyman orthogonality
-condition \fxnote*{proper def?}{(wrt.\ $\mathcal{V}$)} if the map (as
-defined in section~\ref{sec:motivation})
+To simplify notation in the following we will use the notation \fxnote*{hely would like to change
+  this notation}{$\partial_0{f(\epsilon)}$} for maps $f$ with a real domain as just defined in
+(\ref{eq:gateaux-prop}). Gâteaux differentiability is used by \cite{chernozhukov2018double} to
+define \textit{Neyman orthogonality}: A function
+$\phi \colon \mathcal{O} \times \mathcal{V}\rightarrow \R$, defined on the sample space
+$\mathcal{O}$ and depending on a nuisance parameter $\nu \in \mathcal{V}$, fulfills \fxnote*{proper
+  definition or is this fine?}{the Neyman orthogonality condition (wrt.\ $\mathcal{V}$)} if the map
 \begin{equation*}
-  F \colon \mathcal{V} \rightarrow \R, \quad \nu \longmapsto F(\nu) :=\P[\phi(Z, \nu)]
+  F \colon \mathcal{V} \longrightarrow \R, \quad \nu \longmapsto F(\nu) :=  \TT_0(\P, \nu) =\P[\phi(O, \nu)]
 \end{equation*}
 is Gâteaux differentiable at $\nu$ with vanishing derivative, i.e., $\dot{F}_{\nu}(h) = 0$ for all
-$h \in \mathcal{V}$.
+$h \in \mathcal{V}$. We encountered the map above in section~\ref{sec:motivation}, and the point of
+Neyman orthogonality is exactly to ensure that the second component of the decomposition in
+(\ref{eq:target-decom}) vanishes. Given a function $\phi$ it is straightforward to use
+(\ref{eq:gateaux-prop}) to verify that a given function fulfills the condition. Indeed, one can
+examine $\phi_1$, $\phi_2$, and $\phi_3$ defined in (\ref{eq:ate-pars}) and see that $\phi_3$
+fulfills the Neyman orthogonality condition while $\phi_1$ and $\phi_2$ do not.
 
-Neyman orthogonality ensures that the second component of the decomposition in
-(\ref{eq:target-decom}) vanishes, and as the condition can be checked using (\ref{eq:gateaux-prop})
-it is rather straightforward to verify that a given function fulfills the condition. Still, Gâteaux
-is a weak form of differentiability; for instance, as it is equivalent to the directional derivative
-for ordinary multivariate functions, Gâteaux differentiability is not enough to guarantee (ordinary)
-differentiability of such functions. Similarly, to get a richer theory in the functional setting a
-stronger notion of differentiability is needed. For our setting, a particular useful concept is
+This shows that Gâteaux is already a useful concept. Still, it is a rather weak form of
+differentiability; \fxnote*{better fomrlation}{for instance, as it is equivalent to the directional
+  derivative for ordinary multivariate functions, Gâteaux differentiability is not enough to
+  guarantee (ordinary) differentiability of such functions}. To get a richer theory, a stronger
+notion of differentiability is needed. For our setting, a particular useful concept is
 \textit{Hadamard} differentiability.
 
 \begin{definition}[Hadamard derivative]
@@ -387,15 +432,12 @@ is to first use high school math tools to calculate
 (\ref{eq:gateaux-prop}) and then verify that the obtained candidate
 fulfills the requirements of definition~\ref{def:hadamard-diff}.
 
-So far we have assumed the domain to be a \textit{linear} space. When
-working with probability measures, this is often not the case, and
-hence we need one final definition, which allows the operator $\TT$
-and its derivative $\dot{\TT}$ to be defined only on subsets of the
-normed vector space $\mathcal{M}$. We should think of the following as
-mirroring differentiation of a multivariate function defined on a
-manifold embedded in a higher dimensional Euclidean space (for
-instance, a surface embedded in $\R^3$, \fxnote*{Make the picture}{see
-  picture}).
+So far we have assumed the domain to be a \textit{linear} space. When working with probability
+measures, this is often not the case, and hence we need one final definition, which allows the
+operator $\TT$ and its derivative $\dot{\TT}$ to be defined only on subsets of the normed vector
+space $\mathcal{M}$. We should think of the following as mirroring differentiation of a multivariate
+function defined on a manifold embedded in a higher dimensional Euclidean space \fxnote*{Make a
+  picture}{(for instance, a surface embedded in $\R^3$)}.
 
 \begin{definition}[Tangential Hadamard derivative]
   Let $\mathcal{P}$ and $\dot{\mathcal{P}}_x$ be subsets of the normed real vector space
@@ -417,69 +459,35 @@ The only change from the previous definition is that the ``path'' $x + \epsilon_
 to lie in the subset $\mathcal{P}$, and that the ``direction'' is $h$ is restricted to lie in
 $\dot{\mathcal{P}}_x$.
 
-Finally, to be able to talk about differentiability of the statistical
-problem \fxnote*{define this earlier}{$(\mathcal{P}, \TT)$}, we need
-to embed the model $\mathcal{P}$ into a suitable normed vector
-space. To do so we now assume for simplicity that the family
-$\mathcal{P}$ is dominated by a single $\sigma$-finite measure $\mu$
-(for our running example of the ATE this measure would be a product of
-Lebesgue and counting measures), and then think of $\mathcal{P}$ as
-lying inside the Banach space $\mathcal{M}_{\mu}$ of finite signed
-measures dominated by $\mu$ equipped with the variational norm
-\begin{equation*}
-  \Vert M \Vert_{\mathcal{M}_{\mu}} = \int |m |\diff \mu, \quad \text{ for } \quad M = m \cdot \mu.
-\end{equation*}
-
-% We can then represent every element $\P \in \mathcal{P}$
-% as an element in the space of quadratically $\mu$-integrable functions, $\mathcal{L}^2_{\mu}$,
-% through the map
-% \begin{equation}
-%   \label{eq:iso-map}
-%   \mathcal{P} \ni \P \longmapsto s(\P) := \sqrt{p} \in \mathcal{L}^2_{\mu},
-%   \quad \text{for} \quad \P = p\cdot\mu.
-% \end{equation}
-% By the Jordan-Hahn decomposition the map $s$ can be extended to \fxnote*{I think this is
-%   correct...?}{a bijection between $\mathcal{L}^2_{\mu}$ and the space of finite signed measures
-%   dominated by $\mu$}, which we denote as $\mathcal{M}_{\mu}$. If we let $\mathcal{M}_{\mu}$ inherit
-% the vector space and Hilbert space structure from $\mathcal{L}_{\mu}^2$,\footnote{Here we mean that
-%   we should, for instance, define addition of $M_1$ and $M_2$ in $\mathcal{M}_{\mu}$ as
-%   $s^{-1}(s(M_1) + s(M_2))$, and $\langle M_1, M_2 \rangle_{\mathcal{M}_{\mu}}$ as
-%   $\langle s(M_1), s(M_2) \rangle_{\mathcal{L}_{\mu}^2}$, and so on.} we have an isomorphism between
-% these two spaces; hence, we can either think of $\mathcal{P}$ as embedded into the space of finite
-% signed measure $\mathcal{M}_{\mu}$, or as being represented by their square-root densities in
-% $\mathcal{L}_{\mu}^2$. The metric introduced on $\mathcal{M}_{\mu}$ in this way is the (extended)
-% Hellinger distance \citep{bickel1993efficient,steerneman1983total}, but due to the non-linearity of
-% $s$, the last representation is more useful for doing actual calculations. We assume in the
-% following that $\mathcal{M}_{\mu}$ is equipped with norm and vector space structure inherited from
-% $\mathcal{L}_{\mu}^2$ through $s$ defined in (\ref{eq:iso-map}).
-
 \subsection{Tangent spaces and gradients for statistical problems}
 \label{sec:tang-spac-grad}
 
+Using the tools introduces so far, we can now define the so-called \textit{tangent space for the
+  model $\mathcal{P}$} and then formally define the derivative of the map
+$\TT\colon\mathcal{P} \rightarrow \R$ from the statistical problem $(\mathcal{P}, \TT)$. We refer to
+this derivative as the \textit{canonical gradient}, or later in section~\ref{sec:estim-based-canon}
+the \textit{efficient influence function}. The canonical gradient is a central component in our
+analysis of the statistical problem as it represents the optimal asymptotic variance
+(proposition~\ref{prop:cr}); in addition it allows us to construct estimators with vanishing first
+order bias (proposition~\ref{prop:eif-no} and section~\ref{sec:estim-based-canon}).
 
-And, start with motivation? Very interested in tangent space +
-canonical gradient + information bound, etc.
-
-bla bla
-
-Now that we properly defined differentiability of the statistical
-estimation problem, we are now ready to introduce so-called
-\textit{tangent spaces} for the model $\mathcal{P}$, and particularly,
-a specific element of closure of the linear space of the tangent space
-called the \textit{canonical gradient}, or, as we will refer to it in
-Section \ref{sec:estim-based-canon}, the \textit{efficient influence
-  function}. The latter is central component in our analysis of the
-statistical estimation problem, representing the optimal asymptotic
-variance (Lemma ??) + debiasing? --> jeg skal lige forstå slutningen
-dette afsnit.
+As shown in the previous subsection, to be able to talk about differentiability of the statistical
+problem $(\mathcal{P}, \TT)$, we need to embed the model $\mathcal{P}$ into a suitable normed vector
+space. To do so we now assume for simplicity that the family $\mathcal{P}$ is dominated by a single
+$\sigma$-finite measure $\mu$ (for our running example of the ATE this measure would be a product of
+Lebesgue and counting measures), and then think of $\mathcal{P}$ as lying inside the Banach space
+$\mathcal{M}_{\mu}$ of finite signed measures dominated by $\mu$ equipped with the variational norm
+\begin{equation*}
+  \Vert M \Vert_{\mathcal{M}_{\mu}} = \int |m |\diff \mu, \quad \text{ for } \quad M = m \cdot \mu.
+\end{equation*}
 
 \begin{definition}[Tangent space for $\mathcal{P}$]
   Let $\mathcal{P} \subset \mathcal{M}_{\mu}$ be a collection of probability measures and let
   $\P \in \mathcal{P}$. For any one-dimensional path
   $\epsilon \mapsto \P_{\epsilon} \in \mathcal{P}$ with $\P_0 =\P$, which is Hadamard\footnote{When
     the domain is $\R$, all the previously considered types of differentiability are equivalent, so
-    any type could be used here.} differentiable at 0, let $\partial_0\P_{\epsilon}$ be the
-  derivative, and let $\{\partial_0\P_{\epsilon}\}$ be the collection of derivatives of all such paths. We call
+    any type could be used here.} differentiable at 0, let $\partial_0{\P_{\epsilon}}$ be the
+  derivative, and let $\{\partial_0{\P_{\epsilon}}\}$ be the collection of derivatives of all such paths. We call
   the \fxnote*{should there be added some note about this -- always sensible thing, or need to
     assume something?}{closed linear span} of this collection the \textit{tangent space of
     $\mathcal{P}$ at $\P$} and denote it by $\dot{\mathcal{P}}_{\P}$. Formally,
@@ -489,7 +497,7 @@ dette afsnit.
     % {\dot{\mathcal{P}}_{\P}^0} , \quad 
     % \dot{\mathcal{P}}_{\P}^0    :=
     % \left\{ \frac{\diff}{\diff \epsilon } \Big\vert_{\epsilon=0} \P_{\epsilon}
-    \left\{ \partial_0\P_{\epsilon}
+    \left\{ \partial_0{\P_{\epsilon}}
       \midd \epsilon \mapsto \P_{\epsilon} \text{ is Hadamard differentiable and } \P_0 = \P  \right\}.
   \end{equation*}
 \end{definition}
@@ -501,15 +509,12 @@ all such paths. With a differentiable structure on the collection $\mathcal{P}$ 
 \textit{gradient} of a functional defined on this set.
 
 \begin{definition}[Canonical gradient]
-  Let $(\mathcal{P}, \TT)$ be a \fxnote*{}{statistical problem}, with
-  $\mathcal{P} \subset \mathcal{M}_{\mu}$, and
-  $\dot{\mathcal{P}}_{\P}$ the tangent space of $\mathcal{P}$ at
-  $\P \in \mathcal{P}$. If $\TT \colon \mathcal{P} \rightarrow \R$ is
-  Hadamard differentiable at $\P$ tangential to
-  $\dot{\mathcal{P}}_{\P}$, we refer to the Hadamard derivative
-  $\dot{\TT}_{\P}$ as the \fxnote*{first time canonical gradient is
-    mentioned, I think we need motivation, c.f., above
-    :)}{\textit{canonical gradient of the statistical problem}}.
+  \label{def:tangt-space-prob}
+  Let $(\mathcal{P}, \TT)$ be a statistical problem, with $\mathcal{P} \subset \mathcal{M}_{\mu}$,
+  and $\dot{\mathcal{P}}_{\P}$ the tangent space of $\mathcal{P}$ at $\P \in \mathcal{P}$. If
+  $\TT \colon \mathcal{P} \rightarrow \R$ is Hadamard differentiable at $\P$ tangential to
+  $\dot{\mathcal{P}}_{\P}$, we refer to the Hadamard derivative $\dot{\TT}_{\P}$ as the
+  \textit{canonical gradient of the statistical problem}.
 \end{definition}
 
 The definitions of the tangent space $\dot{\mathcal{P}}_{\P}$ and the gradient $\dot{\TT}_{\P}$
@@ -524,82 +529,80 @@ have the rich Hilbert space structure of $\lp$ at our disposal.
 
 For a fixed element $\P \in \mathcal{P}$ with $\mu$-density $p$, consider a one-dimensional
 parametric submodel of $\mu$-densities $p_{\epsilon}$ with $p_0=p$ and
-$p_{\epsilon} \cdot \mu \in \mathcal{P}$ for \fxnote*{interval...}{all $\epsilon$}. Restricting
-attention to such submodels for which the function
+$p_{\epsilon} \cdot \mu \in \mathcal{P}$ for all $\epsilon$ in some small interval. We restrict
+attention to such submodels for which the score function
+$\dot{\ell}_0 := \partial_0{\log(p_{\epsilon})}$ exists as an element in $\lp$; here we use the
+terminology from ordinary maximum likelihood inference where the derivative of the likelihood for a
+parametric model $p_{\epsilon}$ is referred to as the score function. We denote the closed linear
+span of all such score functions by $\Gamma_{\P}$, i.e.,
+$\Gamma_{\P} := \overline{\mathrm{span}}\{\dot{\ell}_0\} \subset \lp$, where $\{\dot{\ell}_0\}$ is
+read as the collection of all possible score functions. \fxnote*{I would like to make this
+  precise.}{It is argued by \cite{bickel1993efficient} that, for all relevant purposes,}
+$\Gamma_{\P}$ is equivalent to the tangent space $\dot{\mathcal{P}}_{\P}$ from
+definition~\ref{def:tangt-space-prob}, and hence $\Gamma_{\P}$ is also referred to as the tangent
+space. It can be shown that all elements of $\Gamma_{\P}$ have mean zero (under $\P$), i.e.,
 \begin{equation*}
-  \dot{\ell}_0 = \partial_0 \log(p_{\epsilon})
+  \Gamma_{\P} \subset \mathbb{H}_0 := 
+  \left\{
+    h \in \lp \mid \P[h] = 0
+  \right\}, 
 \end{equation*}
-exists as an element in $\lp$, we call $\dot{\ell}_0$ the
-\textit{score} of the submodel $p_{\epsilon}$. This reflects the
-terminology used in likelihood inference for ordinary parametric
-models.
+and that if we make no assumptions about the model $\mathcal{P}$ then $\Gamma_{\P} = \mathbb{H}_0$
+\fxnote*{more precise reference}{\citep{bickel1993efficient}}. Due to the well-known structure of
+$\lp$, this representation of the tangent is often easier to analyze; for instance, one useful
+result is the following proposition, which provides an alternative \fxnote*{as stated now, this is
+  not exactly what the proposition says.}{characterization} of the canonical gradient.
 
-\begin{proposition}
-  \label{prop:repr-tang-spac}
-  We denote by
-  $\Gamma_{\P} := \overline{\mathrm{span}}\{\dot{\ell}_0\} \subset
-  \lp$ the closed linear span of the tangent space
-  $\dot{\mathcal{P}}_{\P}$ of all score functions as defined above,
-  considered as a subset of $\lp$.
-  % The tangent space $\dot{\mathcal{P}}_{\P}$ \fxnote*{right words to use? More precise...?}{can be
-  %   represented as} the closed linear span of all score functions as defined above, considered as a
-  % subset of $\lp$, which we denote as
-  % $\Gamma_{\P} := \overline{\mathrm{span}}\{\dot{\ell}_0\} \subset \lp$.
-\end{proposition}
-
-\begin{proof}
-  \fxnote*{todo/finish. Pretty sure this results is correct...}{Something like this:} We can also
-  represent $\mathcal{P}$ as a subset of $\mathcal{L}_{\mu}^2$ through the map
-  $\P \mapsto \sqrt{p}$, and the topology on $\mathcal{P}$ induced in this way is \fxnote*{check --
-    also the generalized versions on the whole space?}{the same as that induced} by
-  $\Vert \blank \Vert_{\mathcal{M}_{\mu}}$ \citep{bickel1993efficient}. This implies that
-  convergence of $(\P_{\epsilon h} - \P_{0})\epsilon^{-1}$ in $\mathcal{M}_{\mu}$ is equivalent to
-  convergence of convergence of $(\sqrt{p_{\epsilon h}} - \sqrt{p_{0}})\epsilon^{-1}$ in
-  $\mathcal{L}_{\mu}^2$. \fxnote*{finish}{Then Gâteaux + map with $/p_0$...}
-\end{proof}
-
-Proposition~\ref{prop:repr-tang-spac} in essence states that we can think of the tangent space as
-the (closed linear span of) the collection of score functions for all parametric submodels
-$\mathcal{P}_{\epsilon}$ passing through $\P$; hence we shall often simply identify
-$\dot{\mathcal{P}}_{\P}$ with $\Gamma_{\P}$. This representation in turn implies the following
-useful representation of the canonical gradient.
+% \begin{proof}
+%   \fxnote*{todo/finish. Pretty sure this results is correct...}{Something like this:} We can also
+%   represent $\mathcal{P}$ as a subset of $\mathcal{L}_{\mu}^2$ through the map
+%   $\P \mapsto \sqrt{p}$, and the topology on $\mathcal{P}$ induced in this way is \fxnote*{check --
+%     also the generalized versions on the whole space?}{the same as that induced} by
+%   $\Vert \blank \Vert_{\mathcal{M}_{\mu}}$ \citep{bickel1993efficient}. This implies that
+%   convergence of $(\P_{\epsilon h} - \P_{0})\epsilon^{-1}$ in $\mathcal{M}_{\mu}$ is equivalent to
+%   convergence of convergence of $(\sqrt{p_{\epsilon h}} - \sqrt{p_{0}})\epsilon^{-1}$ in
+%   $\mathcal{L}_{\mu}^2$. \fxnote*{finish}{Then Gâteaux + map with $/p_0$...}
+% \end{proof}
 
 \begin{proposition}
   \label{prop:repr-can-gradient}
-  Let $(\mathcal{P}, \TT)$ be a statistical problem \fxnote*{canonical
-    gradient not used in the statement this proposition? perhaps add
-    extra equality to (6)?}{with canonical gradient}
-  $\dot{\mathcal{\TT}}_{\P}$ at $\P \in \mathcal{P}$. There exists a
-  unique element $\phi_{\P} \in \Gamma_{\P}$ such that
+  Let $(\mathcal{P}, \TT)$ be a statistical problem with canonical gradient
+  $\dot{\mathcal{\TT}}_{\P}$ at $\P \in \mathcal{P}$. There exists a unique element
+  $\phi_{\P} \in \Gamma_{\P}$ such that
   \begin{equation}
     \label{eq:2}
-    \partial_0 \TT(\P_{\epsilon})
+    \partial_0{\TT(\P_{\epsilon})}
+    = \mathrm{\dot{\TT}_{\P}}
+    {\left(
+        \partial_{0}{\P_{\epsilon}} 
+      \right)}
     = \langle \phi_{\P}, \dot{\ell}_0 \rangle_{\P}
     % =  \int \phi \dot{\ell}_0  \diff \P,
   \end{equation}
   holds for any differentiable submodel $\P_{\epsilon}$ with score function $\dot{\ell}_0$.
 \end{proposition}
 
-\begin{proof}
-  The \fxnote*{Combine this and next remark into a proof sketch}{chain rule for Hadamard derivative}
-  implies that $\partial_0 \TT(\P_{\epsilon}) = \dot{\TT}_{\P}(\partial_0 \P_{\epsilon})$, and then
-  the representation given by proposition~\ref{prop:repr-tang-spac} implies that this expression
-  equals $\Phi_{\P}(\dot{\ell}_0)$ for some continuous linear functional
-  $\Phi_{\P} \colon \Gamma_{\P} \rightarrow \R$. As $\Gamma_{\P}$ is a closed subspace of a Hilbert
-  space it is itself a Hilbert space, and hence Riesz representation theorem (for Hilbert spaces)
-  gives the existence of a unique element $\phi_{\P} \in \Gamma_{\P}$ such that
+\begin{proof}[Sketch of proof]
+  The first equality follows from the chain rule for Hadamard derivatives
+  \citep[chp.~20]{van2000asymptotic}, while the second follows from the arguments given above: If
+  the tangent space can be represented as $\Gamma_{\P}$, the linear map $\dot{\TT}_{\P}$ on
+  $\dot{\mathcal{P}}_{\P}$ \fxnote*{make this proof precise}{can also be thought} of as a linear map
+  on $\Gamma_{\P}$. As $\Gamma_{\P}$ is a closed subspace of a Hilbert space it is itself a Hilbert
+  space, and hence Riesz representation theorem (for Hilbert spaces) gives the existence of a unique
+  element $\phi_{\P} \in \Gamma_{\P}$ such that
   $\Phi_{\P}(\dot{\ell}_0) = \langle\phi_{\P}, \dot{\ell}_0\rangle$ for all elements
   $\dot{\ell}_0 \in \Gamma_{\P}$.
 \end{proof}
 
-By the chain rule of ordinary multivariate calculus we have for a differentiable function
-$f\colon\R^d \rightarrow \R$ and any smooth curve $s\colon\R\rightarrow \R^d$ with
-$s(0) = x_0 \in \R^d$ that
+As with the identification $\dot{\mathcal{P}}_{\P}= \Gamma_{\P}$ we also \fxnote*{}{identify} the
+function $\phi_{\P}$ with the canonical gradient $\dot{\TT}_{\P}$. By the chain rule of ordinary
+multivariate calculus we have for a differentiable function $f\colon\R^d \rightarrow \R$ and any
+smooth curve $s\colon\R\rightarrow \R^d$ with $s(0) = x_0 \in \R^d$ that
 \begin{equation*}
-  \partial_{0} (f\circ s) = \nabla f(s(0)) \cdot (\partial_{0}s )^{\T}
+  \partial_0(f\circ s) = \nabla f(s(0)) \cdot (\partial_0{s} )^{\T}
   =
   \left\langle
-    \nabla f(x_0) ,  \partial_{t}s 
+    \nabla f(x_0) ,  \partial_t{s} 
   \right\rangle,
 \end{equation*}
 and as $\R^d$ can be spanned by smooth 1-dimensional curves, this property characterizes the
@@ -608,136 +611,151 @@ extends to the Hilbert space setting with Hadamard differentiability, and in fac
 characterization \fxnote*{I think this is correct}{can be used to define} Hadamard differentiability
 of the map $\TT$ tangential to $\Gamma_{\P}$ \citep[A.5]{bickel1993efficient}.
 
-As with the identification $\dot{\mathcal{P}}_{\P}= \Gamma_{\P}$ we
-also \fxnote*{}{identify} the function $\phi_{\P}$ with the canonical
-gradient $\dot{\TT}_{\P}$. Note that if $\Gamma_{\P}$ is a proper
-subset of $\lp$ there can be several functions $\tilde{\phi} \in \lp$
-fulfilling condition (\ref{eq:2}); we refer to such functions as
-\textit{gradients}. It follows from standard Hilbert space theory that
-the unique canonical gradient $\phi_{\P}$ can be derived from any
-gradient $\tilde{\phi}$ as the projection onto $\Gamma_{\P}$, i.e.,
-$ \phi_{\P} = \Pi(\tilde{\phi} \mid \Gamma_{\P})$. This geometric
-representation of the tangent space and the gradient is very useful.
+\begin{remark}
+  \label{remark:gradients}
+  Note that it is part of the defining property of the unique function $\phi_{\P}$ that it lies in
+  the tangent space $\Gamma_{\P}$. If $\Gamma_{\P}$ is a proper subset of $\mathbb{H}_0$ there can
+  be several functions $\tilde{\phi} \in \mathbb{H}_0$ fulfilling condition (\ref{eq:2}); we refer
+  to such functions as \textit{gradients}. It follows from standard Hilbert space theory that the
+  unique canonical gradient $\phi_{\P}$ can be derived from any gradient $\tilde{\phi}$ as the
+  projection onto $\Gamma_{\P}$, i.e., $ \phi_{\P} = \Pi(\tilde{\phi} \mid \Gamma_{\P})$. This
+  geometric picture of the tangent space and the canonical gradient can be very useful.
+\end{remark}
+
 
 \subsection{Properties of the canonical gradient}
 \label{sec:prop-canon-grad}
 
-Seems useful to distinguish this part from the remainder of Section
-\ref{sec:funct-deriv-can-grad}, but I may not be right about this. I am
-not sure I understood this result yet, but seems nice :)
-
-\fxnote*{wait, is the decomposition needed for this result, or can we
-  wait with returning to the decomposition till talking about
-  estimation?}{Returning to the decomposition in
-  \eqref{eq:target-decom} (Section \ref{sec:motivation}) we have the
-  following results.}
+In this subsection we derive two important properties of the canonical gradient. The first result
+states that the canonical gradient fulfills the Neyman orthogonality condition, which is the same as
+saying that the mean of the canonical gradient is insensitive to small (first order) perturbations
+of the nuisance parameters. The second results states that the canonical gradient in addition
+provides us with a theoretical bound on how efficient the target parameter can be estimated.
 
 \begin{proposition}
   \label{prop:eif-no}
   Let $(\mathcal{P}, \TT)$ be a statistical problem with $\mathcal{P}$ dominated by $\mu$ and such
   that $\TT(\P) = \P[\phi(Z, \nu(\P))]$ for some function
   $\phi\colon \mathcal{Z} \times \mathcal{V} \rightarrow \R$. If $\phi(\blank, \nu(\P))$ is the
-  canonical gradient of $(\mathcal{P}, \TT)$ then, \fxnote*{can these be made precise?}{under
-    regularity conditions}, $\phi$ fulfills the Neyman orthogonality condition \fxnote*{ok? Or
-    should it actually be $\nu(\mathcal{P})$?}{(wrt.\ $\dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$)},
-  \fxnote*{some unaligned defintions here?}{i.e.},
-  $\partial_0 \P[\phi(\blank, \nu(\P) + \epsilon h)] = 0$ for all
-  $h \in \dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$.
+  canonical gradient of $(\mathcal{P}, \TT)$ at $\P$ then, \fxnote*{can these be made
+    precise?}{under regularity conditions}, $\phi$ fulfills the Neyman orthogonality condition
+  \fxnote*{ok? Or should it actually be $\dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$?}{(wrt.\
+    $\nu(\mathcal{P})$)}.
 \end{proposition}
 
-\fxnote*{Maybe simplify this simply to the statement that the EIF fulfills the N-O condition and
-  then have the N-O as a proper def earlier? }{}
-
-\begin{proof}
-  Under regularity conditions that allow us to interchange integration and differentation in the
-  following, we have for any \fxnote*{}{differentiable} path
+\begin{proof}[Sketch of proof]
+  Under suitable regularity conditions, it holds for any \fxnote*{}{differentiable} path
   $\{\P_{\epsilon}\}_{\epsilon} \subset \mathcal{P}$ with $\P_0=\P$ that
   \begin{align}
     \label{eq:3}
     \begin{split}
-      \partial_0 \TT(\P_{\epsilon})% = \partial_0 \P_{\epsilon}[\phi(Z, \nu(\P_{\epsilon}))]
-      & =\partial_0 \int p_{\epsilon}(z) \phi(z, \nu(\P_{\epsilon})) \diff \mu(z) \\
-      & = \int p \{\partial_0  \phi(z, \nu(\P_{\epsilon}))\} +  \{\partial_0 p_{\epsilon}(z)\} \phi(z, \nu(\P)) \diff \mu(z) \\
-      & = \partial_0 \P[ \phi(\blank, \nu(\P_{\epsilon}))] +
-      % \P[\partial_0\log p_{\epsilon} \, \phi(\blank, \nu(\P))].
+      \partial_0{ \TT(\P_{\epsilon})}% = \partial_0 \P_{\epsilon}[\phi(Z, \nu(\P_{\epsilon}))]
+      & =\partial_0{ \int p_{\epsilon}(z) \phi(z, \nu(\P_{\epsilon})) \diff \mu(z)} \\
+      & = \int p(z) \{\partial_0{ \phi(z, \nu(\P_{\epsilon}))}\} +  \{\partial_0{p_{\epsilon}(z)}\} \phi(z, \nu(\P)) \diff \mu(z) \\
+      & = \partial_0{\P[ \phi(\blank, \nu(\P_{\epsilon}))]} +
       \langle \dot{\ell}_0, \phi(\blank, \nu(\P))\rangle_{\P},
     \end{split}
   \end{align}
   where $\dot{\ell}_0$ is the score function of the parametric submodel $\P_{\epsilon}$ and we used
-  the relation $\partial_{0}\log p_{\epsilon} = (\partial_{0} p_{\epsilon})p_0^{-1}$. As
+  the relation $\partial_0{\log p_{\epsilon}} = (\partial_0{p_{\epsilon}})p_0^{-1}$. As
   $\phi(\blank, \nu(\P))$ is the canonical gradient at $\P$,
-  proposition~\ref{prop:repr-can-gradient} and (\ref{eq:3}) imply that
-  $\partial_0 \P[ \phi(\blank, \nu(\P_{\epsilon}))]=0$. \fxnote*{finish the argument with something
-    like this}{Assuming Hadamard differentiability of $\P \mapsto \nu(\P)$ and
-    $\nu \mapsto F(\nu) = \P[\phi(\blank, \nu)]$ we can write
-    $\partial_0 \P[\phi(\blank, \nu(\P) + \epsilon h)] = \partial_0 \dot{F}_{\nu(\P)}(h)$, for
-    $h\in\dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$; hence (by definition of $\dot{\mathcal{P}}_{\P}$)
-    we can find path $\P_{\epsilon}$ such that $\dot{\nu}_{\P}(\partial_0 \P_{\epsilon}) = h$, and
-    then picking this path in the expression above we get $\partial_0 \dot{F}_{\nu(\P)}(h) =0$.}
+  proposition~\ref{prop:repr-can-gradient} and (\ref{eq:3}) imply that \fxnote*{enought? Finish the
+    proof.}{$\partial_0{\P[ \phi(\blank, \nu(\P_{\epsilon}))]}=0$}.
 \end{proof}
 
 \begin{remark}
-  Note that the fact that a function $\phi$ fulfills the Neyman
-  orthogonality condition does not necessarily imply that $\phi$ is
-  the canonical gradient (see, for instance,
-  \cite{chernozhukov2016double} for an example). This can be seen from
-  the fact that we in the proof above only used that
-  $\phi(\blank, \nu(\P))$ satisfies (\ref{eq:2}), and not that
-  $\phi(\blank, \nu(\P)) \in \Gamma_{\P}$; hence, \fxnote*{I think
-    this must be correct}{any gradient for the statistical problem
-    will fulfill the Neyman orthogonality condition} (under regularity
-  conditions).
+  Note that the fact that a function $\phi$ fulfills the Neyman orthogonality condition does not
+  necessarily imply that $\phi$ is the canonical gradient (see, for instance,
+  \cite{chernozhukov2016double} for an example). This can be seen from the fact that we in the proof
+  sketch above only used that $\phi(\blank, \nu(\P))$ satisfies (\ref{eq:2}), and not that
+  $\phi(\blank, \nu(\P)) \in \Gamma_{\P}$ (see also remark~\ref{remark:gradients}); hence,
+  \fxnote*{I think this must be correct}{any gradient for the statistical problem will fulfill the
+    Neyman orthogonality condition} (under regularity conditions).
 \end{remark}
 
-\fxnote*{I sort of feel like moving this to the next
-  section?}{\textit{Debiasing property of an estimator based on the
-    canonical gradient.}}  \fxnote*{It is not until here we need the
-  decomposition of \eqref{eq:target-decom}, am I right?}{The result
-  shows that estimators} based on the canonical gradient has a
-``build-in'' so-called \textit{debiasing} mechanism because the first
-order bias (the second expression in (\ref{eq:target-decom})), due to
-estimation of the nuisance parameter $\hat{\nu}_n$, vanishes. This
-debiasing mechanism is crucial for $n^{-1/2}$-rate inference of a
-target parameter in a statistical model with nuisance parameters that
-are not estimable at this rate themselves. \fxnote*{What is the
-  intuitive explanation of this result? In standard calculus, the
-  derivatives
-  are orthogonal -- can this intuition explain the results?}{} \\
-
-
-
+The reason to be particularly interested in the \textit{canonical} gradient, instead of simply any
+gradient, comes from the following results. First, recall that for any statistical problem with a
+\textit{finite-dimensional} model $\mathcal{P}$, the Fisher information provides a measure of the
+information obtainable about the parameters of the model; this measure is justified by the
+Cramer-Rao bound, which states that the least possible asymptotic variance of any estimator of the
+parameters of the model is given by the inverse of the Fisher information. In a more general form,
+the Cramer-Rao bound states that, for a one-dimensional family indexed by $t \in \R$ with parameter
+of interest $\TT(\P_t)$, the optimal asymptotic variance is
+\begin{equation}
+  \label{eq:4}
+  \frac{(\partial_{0}{\TT(\P_t)})^2}{\P[\dot{\ell}_0^2]},
+\end{equation}
+where $\dot{\ell}_0$ is the score of the model, i.e., $\P[\dot{\ell}_0^2]$ is the Fisher
+information. Hence, the information bound for the parameter $\theta= \TT(\P_t)$ in this model is
+defined as the inverse of (\ref{eq:4}). Now, a statistical problem with an infinite-dimensional
+model $\mathcal{P}$ contains all the one-dimensional submodels
+$\{\P_{\epsilon}\} \subset \mathcal{P}$, first introduced in definition~\ref{def:tangt-space-prob};
+each of these models have information bound wrt.\ $\TT(\P_{\epsilon})$ given by the inverse of
+(\ref{eq:4}), and hence it is natural to define the information bound for the whole model as
+information bound for the \textit{least informative submodel}. Formally, this means we define the
+information bound of the statistical problem $(\mathcal{P}, \TT)$ as
+\begin{equation*}
+  \mathcal{I}(\mathcal{P}, \TT)  := \inf
+  \left\{
+    \frac{\P[\dot{\ell}_0^2]}{(\partial_{0}{\TT(\P_{\epsilon})})^2}
+  \right\},
+\end{equation*}
+where the infimum is taken over all submodels $\{\mathcal{P}_{\epsilon}\}$ with score functions
+$\dot{\ell}_0$. We then have the following relation. 
 \begin{proposition}
-  I just want this to be van der Vaart Lemma 25.19, i.e., variance of
-  the canonical gradient is the Cramér-Rao lower bound.
   \label{prop:cr}
+  For a statistical problem $(\mathcal{P}, \TT)$ with canonical gradient $\dot{\TT}_{\P}$ it holds
+  that
+  \begin{equation*}
+    \mathcal{I}(\mathcal{P}, \TT)^{-1} = 
+    \P[\dot{\TT}_{\P}^2].
+  \end{equation*}
 \end{proposition}
 
 \begin{proof}
-  Cauchy-Schwartz.
+  Inverting the expression changes the infimum to a supremum, and then using
+  proposition~\ref{prop:repr-can-gradient} we get
+  \begin{equation*}
+    \mathcal{I}(\mathcal{P}, \TT)^{-1} = 
+    \sup_{\dot{\ell} \in \Gamma_{\P}}
+    \frac{\langle\phi_{\P}, \dot{\ell} \rangle_{\P}^2}{\P[\dot{\ell}^2]}.
+  \end{equation*}
+  Using the Cauchy-Schwarz inequality gives that
+  $\langle\phi_{\P}, \dot{\ell} \rangle_{\P} \leq \P[\phi_{\P}] \P[\dot{\ell}]$, and as
+  $\phi_{\P} \in \Gamma_{\P}$, the supremum is achieved at $\dot{\ell}=\phi_{\P}$.
 \end{proof}
+
+
+\fxnote[inline, nomargin]{And intuitive explanation of these two results. Second one makes sense as
+  the gradient can be seen at the ``most informative'' direction in which to move. But what is the
+  intuition behind the first one? Something about derivatives being orthogonal?}
  
 
 \section{Estimation based on the canonical gradient}
 \label{sec:estim-based-canon}
 
-\fxnote*{proposed change to section title here}{If you agree on the
-  above (moving the debiasing remark down)}, I think we should return
-to the decomposition in \eqref{eq:target-decom}. The first nice
-property to have is now exactly debiasing. Then we can move on to
-define asymptotically linear estimators and constructing an
-asymptotically linear estimator based on the decomposition in
-\eqref{eq:target-decom} which has influence function equal to the
-efficient influence function. If we have the result that all influence
-functions are gradients, then Proposition \ref{prop:cr} gives
+\fxnote*{proposed change to section title here}{If you agree on the above (moving the debiasing
+  remark down)}, I think we should return to the decomposition in \eqref{eq:target-decom}. The first
+nice property to have is now exactly debiasing. Then we can move on to define asymptotically linear
+estimators and constructing an asymptotically linear estimator based on the decomposition in
+\eqref{eq:target-decom} which has influence function equal to the efficient influence function. If
+we have the result that all influence functions are gradients, then Proposition \ref{prop:cr} gives
 asymptotic efficiency if the remainder is asymptotic negligible.
 
+\fxnote*{I sort of feel like moving this to the next section?}{\textit{Debiasing property of an
+    estimator based on the canonical gradient.}} \fxnote*{It is not until here we need the
+  decomposition of \eqref{eq:target-decom}, am I right?}{The result shows that estimators} based on
+the canonical gradient has a ``build-in'' so-called \textit{debiasing} mechanism because the first
+order bias (the second expression in (\ref{eq:target-decom})), due to estimation of the nuisance
+parameter $\hat{\nu}_n$, vanishes. This debiasing mechanism is crucial for $n^{-1/2}$-rate inference
+of a target parameter in a statistical model with nuisance parameters that are not estimable at this
+rate themselves. 
 
  
 
-The last result of the previous section demonstrates that estimators
-based on the canonical gradient provide target parameter estimators
-with no first order bias. In this section we show that they also
-provide \textit{efficient} estimators.
+\fxnote*{delete?}{The last result of the previous section demonstrates that estimators based on the
+  canonical gradient provide target parameter estimators with no first order bias. In this section
+  we show that they also provide \textit{efficient} estimators.}
 
 \fxnote*{briefly to this}{
   \begin{itemize}
@@ -745,6 +763,9 @@ provide \textit{efficient} estimators.
   \item Connection to canonical gradient
   \end{itemize}
 }
+
+... The results of the previous section translate directly into nice properties of estimators that
+have the canonical gradient as their influence function
 
 \section{Further directions}
 \label{sec:further-directions}
@@ -754,6 +775,7 @@ provide \textit{efficient} estimators.
 \item Undersmoothing
 \item Empirical process theory (or/versus sample splitting)
 \item Nuisance estimators (and their rate of convergence)
+\item Double robustness (part of above?)
 \item Other/further topic on functional derivatives / derivatives of operators:
   \begin{itemize}
   \item Functional delta method 

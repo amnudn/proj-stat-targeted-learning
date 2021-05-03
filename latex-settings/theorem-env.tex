@@ -7,7 +7,7 @@
 	{\topsep}{\topsep}
 	{}{}
 	{\bfseries}{}
-	{\newline}{} 
+	{\newline}{}
 % Adjusted thm-environment with bullet at end
 \newcommand{\newmarkedtheorem}[1]{%
   \newenvironment{#1}
@@ -35,5 +35,7 @@
       
 \theoremstyle{break}
 \newmarkedtheorem{example}[theorem]{Example}
-\newmarkedtheorem{remark}[theorem]{Remark}
 \newmarkedtheorem{note}[theorem]{Note}
+
+\theoremstyle{remark}
+\newmarkedtheorem{remark}[theorem]{Remark}
