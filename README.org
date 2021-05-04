@@ -12,4 +12,4 @@ pph <- fread("http://publicifsv.sund.ku.dk/~helene/pph-subset.csv")
 #+END_SRC
 
 * Note on influence functions and functional derivatives
-We are working 
+We are working  
