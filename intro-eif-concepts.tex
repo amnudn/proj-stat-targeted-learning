@@ -4,7 +4,7 @@
 \input{./latex-settings/standard-commands.tex}
 \input{./latex-settings/theorem-env.tex}
 \input{./latex-settings/title-compact.tex}
-\fxsetup{status=draft}
+\fxsetup{status=final}
 \usepackage[colorlinks=true]{hyperref} % Doesn't work for org, so included here
 
 % For dark mode:
@@ -69,11 +69,11 @@ throughout.
   \label{example:aver-treatm-effect}
   Suppose we observed independent and identically distributed (iid) samples \(O_1,\ldots,O_n\),
   \(n\in\mathbb{N}\) of a random variable \(O \in\mathcal{O}\) distributed according to an unknown
-  distribution function \(P_0\) belonging to a statistical model \(\mathcal{P}\). Each observation
+  distribution function \(\P\) belonging to a statistical model \(\mathcal{P}\). Each observation
   consists of \(O= (X, A, Y)\) where \(X\in \R^d\) are covariates, \(A\in \lbrace 0,1\rbrace\) is a
   binary exposure and \(Y\in\lbrace 0, 1\rbrace\) is a binary outcome variable. The target parameter
   can be written as the functional \(\TT \colon \mathcal{P} \rightarrow \R\) on distributions
-  \(P\in\mathcal{P}\), for our purposes defined as
+  \(\P\in\mathcal{P}\), for our purposes defined as
   \begin{align}
     \TT(\P) = \TT_1( \mu_X, f) = \int \big( f( 1, x) - f(0, x) \big) d\mu_X (x), 
     \label{eq:Psi:ate}
@@ -638,11 +638,11 @@ provides us with a theoretical bound on how efficient the target parameter can b
   \label{prop:eif-no}
   Let $(\mathcal{P}, \TT)$ be a statistical problem with $\mathcal{P}$ dominated by $\mu$ and such
   that $\TT(\P) = \P[\phi(Z, \nu(\P))]$ for some function
-  $\phi\colon \mathcal{Z} \times \mathcal{V} \rightarrow \R$. If $\phi(\blank, \nu(\P))$ is the
-  canonical gradient of $(\mathcal{P}, \TT)$ at $\P$ then, \fxnote*{can these be made
-    precise?}{under regularity conditions}, $\phi$ fulfills the Neyman orthogonality condition
-  \fxnote*{ok? Or should it actually be $\dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$?}{(wrt.\
-    $\nu(\mathcal{P})$)}.
+  $\phi\colon \mathcal{Z} \times \mathcal{V} \rightarrow \R$. If
+  $\phi(\blank, \nu(\P)) - \P[\phi(O, \nu(\P))]$ is the canonical gradient of $(\mathcal{P}, \TT)$
+  at $\P$ then, \fxnote*{can these be made precise?}{under regularity conditions}, $\phi$ fulfills
+  the Neyman orthogonality condition \fxnote*{ok? Or should it actually be
+    $\dot{\nu}_{\P}(\dot{\mathcal{P}}_{\P})$?}{(wrt.\ $\nu(\mathcal{P})$)}.
 \end{proposition}
 
 \begin{proof}[Sketch of proof]
@@ -738,12 +738,12 @@ $\dot{\ell}_0$. We then have the following relation.
 
 Let us now return to estimation of the target parameter of the statistical problem
 $(\mathcal{P}, \TT)$ and the decomposition in (\ref{eq:target-decom}). Recall that we assume
-\begin{enumerate}[label=(A\arabic*), ref=A\arabic*, topsep=0pt]
+\begin{enumerate}[label=A\arabic*:, ref=A\arabic*, topsep=0pt]
 \item \label{item:A1} $\G{\phi(O,\hat{\nu}_n)} = \G{\phi(O,\nu)} + \smallO_{\P}(1)$
 \item \label{item:A2} $\Vert \hat{\nu}_n - \nu\Vert = \smallO_{\P}(n^{-1/4})$
 \end{enumerate}
-where $\nu = \nu(\P)$ is the ``true'' value of the nuisance parameter. Now, if $\phi$ is the
-canonical gradient, proposition~\ref{prop:eif-no} guarantees that the second component in
+where $\nu = \nu(\P)$ is the ``true'' value of the nuisance parameter. Now, if $\phi - \P[\phi]$ is
+the canonical gradient, proposition~\ref{prop:eif-no} guarantees that the second component in
 (\ref{eq:target-decom}) vanishes, and hence, under assumptions~\ref{item:A1} and \ref{item:A2}, the
 expression simplifies to
 \begin{equation*}
@@ -754,52 +754,87 @@ expression simplifies to
   = \G{\phi( O, \nu)} + \smallO_{\P}(1)
 \end{equation*}
 By the central limit theorem, the dominating term on the right hand side converges to a centered
-Gaussian distribution with variance equal to $\P[\phi(O, \nu)^2]$. By proposition~\ref{prop:cr},
+Gaussian distribution with variance equal to $\V[\phi(O, \nu)]$. By proposition~\ref{prop:cr},
 this is the inverse of the information bound, and hence the estimator $\hat{\theta}_n$ based on the
 canonical gradient achieves the information bound for $(\mathcal{P}, \TT)$.
 
-\begin{example}[Efficient estimation of the ATE]
-  Todo
-\end{example}
-
-To conclude this section about estimation, we connect our discussion about functional derivatives to
-the notion of \textit{influence functions} for \textit{regular asymptotically linear} estimators. An
-estimator $\hat{\theta}_n$ of the parameter $\theta = \TT(\P)$ under the model $\mathcal{P}$, is
-called asymptotically linear if there exists a function
-$\ic\colon \mathcal{O} \times \mathcal{P} \rightarrow \R$ with $\ic(\blank, \P) \in \lp$ and
-$\P[\ic(O, \P)]$ for all $\P \in \mathcal{P}$, such that
+We can now connect our discussion about functional derivatives to the notion of \textit{influence
+  functions} for \textit{regular asymptotically linear} estimators. An estimator $\hat{\theta}_n$ of
+the parameter $\theta = \TT(\P)$ under the model $\mathcal{P}$, is called asymptotically linear if
+there exists a function $\ic\colon \mathcal{O} \times \mathcal{P} \rightarrow \R$ with
+$\ic(\blank, \P) \in \lp$ and $\P[\ic(O, \P)]$ for all $\P \in \mathcal{P}$, such that
 \begin{equation*}
   \hat{\theta}_n - \theta = \empmeas[\ic(O, \P)] + \smallO_{\P}(n^{-1/2}).
 \end{equation*}
-to avoid pathological counter-examples, an additional technical regularity condition is imposed,
-which gives the notion of \textit{regular} asymptotically linear (RAL) estimators.
-\fxnote*{vdVaart?}{(ref)}. The function $\ic$ is referred to as the \textit{influence function} of
-the RAL estimator. By the central limit theorem, every RAL estimator is asymptotically normally
-distributed with variance given by the squared expectation of its influence function, and hence
-every RAL estimator is uniquely characterized by its distribution function. 
+to avoid pathological counter-examples, an additional technical \fxnote*{reference.
+  vdVaart?}{regularity} condition is imposed, which gives the notion of \textit{regular}
+asymptotically linear (RAL) estimators. The function $\ic$ is referred to as the \textit{influence
+  function} of the RAL estimator. As an example, the arguments above showed that the estimator
+$\hat{\theta}_n$ is a RAL estimator with influence function
+$\ic(O, \P) = \phi(O, \nu) - \P[\phi(O, \nu)]$.
 
-\fxnote[inline, nomargin]{... Connect both gradient and IF, or just \textit{canonical} and
-  \textit{efficient} IF?... Maybe both and then just say ``under regularity conditions''...?}
- 
-\section{Further directions}
+By the central limit theorem, every RAL estimator is asymptotically normally distributed with
+variance given by the squared expectation of its influence function, and hence every RAL estimator
+is uniquely characterized by its influence function. All RAL estimators for a given statistical
+problem can thus be compared in terms of their asymptotic variance, and so it is natural to search
+for the RAL estimator with lowest possible variance, as this will provide the most efficient way of
+estimating the parameter of interest.
+
+Now, \fxnote*{precise statement and reference for this}{it can be shown that} there is a one-to-one
+correspondence between influence functions of RAL estimators and gradients of a statistical problem
+(see remark~\ref{remark:gradients}): Every RAL estimator will have a gradient as its influence
+function, and for every gradient there exists a RAL estimator with that gradient as its influence
+function. Furthermore, and in line with proposition~\ref{prop:cr}, the RAL estimator with minimal
+asymptotic variance will have the canonical gradient as its influence function. 
+
+\begin{example}[Efficient estimation of the ATE]
+  \label{example:effi-ate}
+  Returning to the problem of estimating the average treatment effect, we already argued in
+  section~\ref{sec:funct-deriv} that the function $\phi_3$ defined in~(\ref{eq:ate-pars}) fulfills
+  the Neyman orthogonality condition. In fact, it can be shown $\phi_3 - \P[\phi_3]$ indeed is the
+  canonical gradient of the statistical problem $(\mathcal{P}, \TT)$ when we impose no assumptions
+  on the model $\mathcal{P}$. Hence, assuming~\ref{item:A1} and \ref{item:A2}, the discussion above
+  shows that the estimator $\TT_3(\empmeas, \hat{f}_n, \hat{\pi}_n)$ will converge to the true value
+  $\theta=\TT(\P)$ at $n^{-1/2}$-rate, and that this estimator is efficient, meaning that it is
+  asymptotically unbiased with the lowest possible asymptotic variance. In particular, with an
+  estimate of the asymptotic variance, we can construct a Wald confidence interval of the parameter
+  $\theta$, which will (asymptotically) be the smallest possible. 
+\end{example}
+
+\begin{remark}
+  When we say that we impose ``no assumptions'' on the model $\mathcal{P}$, this is, strictly
+  speaking, not completely true. For instance, as a minimum, we would need to impose that the
+  function $\pi$ is uniformly bounded away from $0$ and $1$ for the function $\phi_3$ to be
+  well-defined. In addition, though we do not want to impose parametric assumptions on $f$ and
+  $\pi$, for estimation to be possible at all we would need to impose some minimum amount of
+  regularity, as for instance, continuity or a uniformly bounded total variation norm. Fortunately,
+  imposing such regularity conditions does not affect the conclusion obtained in the example above.
+  However, more restrictive assumptions, such as, for instance, randomization of the treatment
+  \textit{can} change the tangent space and thereby potentially also the canonical gradient and the
+  information bound (see section~\ref{sec:further-directions} for a few additional comments).
+\end{remark}
+
+\section{Further directions and topics}
 \label{sec:further-directions}
 
+This section is not finished. 
+
 \begin{itemize}
-\item \textit{Semi}-parametric inference.  
-\item Undersmoothing
-\item Empirical process theory (or/versus sample splitting)
+\item \textit{Semi}-parametric inference.
+\item Empirical process theory and sample splitting
 \item Nuisance estimators (and their rate of convergence)
 \item Double robustness (part of above?)
-\item Other/further topic on functional derivatives / derivatives of operators:
-  \begin{itemize}
-  \item Functional delta method 
-  \item Analysis of estimator
-  \end{itemize}
 \item Concrete strategies for finding estimators:
   \begin{itemize}
   \item Debiasing / solving the (efficient) score equation
   \item TMLE
   \item ...?
+  \end{itemize}
+\item Undersmoothing
+\item Other/further topic on functional derivatives / derivatives of operators:
+  \begin{itemize}
+  \item Functional delta method 
+  \item Analysis of estimator
   \end{itemize}
 \end{itemize}
 
