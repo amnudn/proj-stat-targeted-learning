@@ -1,0 +1,15 @@
+#+TITLE: Project in Statistics: Targeted Learning
+
+Some of the material used in the course can be found here. 
+
+* Data
+The data we use can be retrieved by running the following commands in =R=, assuming you have
+installed the =data.table= package.
+
+#+BEGIN_SRC R
+library(data.table)
+pph <- fread("http://publicifsv.sund.ku.dk/~helene/pph-subset.csv")
+#+END_SRC
+
+* Note on influence functions and functional derivatives
+We are working 
