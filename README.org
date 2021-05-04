@@ -20,3 +20,6 @@ of the theoretical results from the literature, and state the typically encounte
 mathematically precise way. You are not supposed to study everything in full detail, but should
 instead consider the note as an additional service which might be helpful to you. Also, you are
 /not/ supposed to write like this in you project! 
+
+The note is a work in progress, so it might get adjusted and expanding during the course -- possibly
+depending on the directions you take.
