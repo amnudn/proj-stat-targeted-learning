@@ -4,7 +4,7 @@
 \input{./latex-settings/standard-commands.tex}
 \input{./latex-settings/theorem-env.tex}
 \input{./latex-settings/title-compact.tex}
-\fxsetup{status=draft}
+\fxsetup{status=final}
 \usepackage[colorlinks=true]{hyperref} % Doesn't work for org, so included here
 
 % For dark mode:
@@ -46,6 +46,8 @@ section~\ref{sec:estim-based-canon} where we also present the canonical gradient
 problem. In section~\ref{sec:further-directions} we very briefly mention further directions and
 related topics that are neglected in this note.
 
+\fxnote[inline, nomargin]{[Notation]}
+
 
 \section{The average treatment effect as a statistical problem}
 \label{sec:introduction}
@@ -84,7 +86,7 @@ throughout.
 
 \fxnote*{ref}{The ATE can be interpreted causally under structural assumptions}. In this note, we do
 not consider these important issues, but merely consider the estimation of the ATE as a statistical
-problem as introduced above, i.e., a tuple $(\mathcal{P}, \TT)$ taken the concrete form given in
+problem as introduced above, i.e., a tuple $(\mathcal{P}, \TT)$ taking the concrete form given in
 (\ref{eq:Psi:ate}). In this case, the nuisance parameters are the conditional expectation of the
 outcome $Y$ given covariates $X=x$ and treatment $A=a$, which we denoted by $f$, and the marginal
 distribution of $X$; we are not really interested in these functions, but we need them to be able to
@@ -113,7 +115,7 @@ $\mu$. For later reference we define
   \begin{gathered}
     \phi_1(x; f) := f(1,x) - f(0,x), \quad
     \phi_2(y,a,x; \pi) := \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)},\quad \text{and}  \\
-    \phi_3(y,a,x; f, \pi) := \phi_2(y,a,x) + \phi_1(x) - \frac{a\,f(1,x)}{\pi(x)} +
+    \phi_3(y,a,x; f, \pi) := \phi_2(y,a,x; \pi) + \phi_1(x; f) - \frac{a\,f(1,x)}{\pi(x)} +
     \frac{(1-a)\,f(0,x)}{1-\pi(x)},
   \end{gathered}
 \end{equation}
@@ -281,7 +283,7 @@ further expand the above as
   + 
   \mathcal{O}_{\P}(\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2),
 \end{equation}
-and where $\Vert \blank \Vert_{\mathcal{V}}$ is some norm defined on the space where the nuisance
+where $\Vert \blank \Vert_{\mathcal{V}}$ is some norm defined on the space where the nuisance
 parameter $\nu$ takes it values; this would typically be a function space, so the norm could, for
 instance, be the $\mathcal{L}^2$-norm or the supremum-norm. The asymptotic analysis of each of the
 three components in (\ref{eq:target-decom}) requires some fairly advanced mathematical tools, and in
@@ -320,8 +322,8 @@ $\TT_0$ in such a way that $\mathrm{D_{\nu}{\TT_0}} = 0$, we would get rid of th
 term altogether.
 
 This goal is our motivation for studying functional derivatives in the next section. As mentioned,
-we will see that this study will also allows to analyze how efficient a given statistical problem
-can be estimated.
+we will see that this study will also allow us to analyze how efficiently a given statistical
+problem can be estimated.
 
 \section{Functional derivatives and the canonical gradient}
 \label{sec:funct-deriv-can-grad}
@@ -337,8 +339,6 @@ this allow us to derive some useful properties in subsection~\ref{sec:prop-canon
 
 \subsection{Functional derivatives}
 \label{sec:funct-deriv}
-
-
 
 The most straightforward form of functional differentiabiliy is the generalization of the
 \textit{directional derivative} of multivariate calculus. This is known as Gâteaux differentiability
@@ -548,10 +548,12 @@ space. It can be shown that all elements of $\Gamma_{\P}$ have mean zero (under 
   \right\}, 
 \end{equation*}
 and that if we make no assumptions about the model $\mathcal{P}$ then $\Gamma_{\P} = \mathbb{H}_0$
-\fxnote*{more precise reference}{\citep{bickel1993efficient}}. Due to the well-known structure of
-$\lp$, this representation of the tangent is often easier to analyze; for instance, one useful
-result is the following proposition, which provides an alternative \fxnote*{as stated now, this is
-  not exactly what the proposition says.}{characterization} of the canonical gradient.
+\fxnote*{more precise reference}{\citep{bickel1993efficient}}.
+
+Due to the well-known structure of $\lp$, is often easier to analyze the tangent space as the
+subspace $\Gamma_{\P} \subset \lp$; for instance, one useful result is the following proposition,
+which provides an alternative \fxnote*{as stated now, this is not exactly what the proposition
+  says.}{characterization} of the canonical gradient.
 
 % \begin{proof}
 %   \fxnote*{todo/finish. Pretty sure this results is correct...}{Something like this:} We can also
@@ -704,11 +706,11 @@ where the infimum is taken over all submodels $\{\mathcal{P}_{\epsilon}\}$ with 
 $\dot{\ell}_0$. We then have the following relation. 
 \begin{proposition}
   \label{prop:cr}
-  For a statistical problem $(\mathcal{P}, \TT)$ with canonical gradient $\dot{\TT}_{\P}$ it holds
-  that
+  For a statistical problem $(\mathcal{P}, \TT)$ with canonical gradient \fxnote*{or just
+    $\phi_{\P}$?}{$\dot{\TT}_{\P} = \phi_{\P}$} it holds that
   \begin{equation*}
     \mathcal{I}(\mathcal{P}, \TT)^{-1} = 
-    \P[\dot{\TT}_{\P}^2].
+    \P[\phi_{\P}^2].
   \end{equation*}
 \end{proposition}
 
@@ -734,39 +736,51 @@ $\dot{\ell}_0$. We then have the following relation.
 \section{Estimation based on the canonical gradient}
 \label{sec:estim-based-canon}
 
-\fxnote*{proposed change to section title here}{If you agree on the above (moving the debiasing
-  remark down)}, I think we should return to the decomposition in \eqref{eq:target-decom}. The first
-nice property to have is now exactly debiasing. Then we can move on to define asymptotically linear
-estimators and constructing an asymptotically linear estimator based on the decomposition in
-\eqref{eq:target-decom} which has influence function equal to the efficient influence function. If
-we have the result that all influence functions are gradients, then Proposition \ref{prop:cr} gives
-asymptotic efficiency if the remainder is asymptotic negligible.
+Let us now return to estimation of the target parameter of the statistical problem
+$(\mathcal{P}, \TT)$ and the decomposition in (\ref{eq:target-decom}). Recall that we assume
+\begin{enumerate}[label=(A\arabic*), ref=A\arabic*, topsep=0pt]
+\item \label{item:A1} $\G{\phi(O,\hat{\nu}_n)} = \G{\phi(O,\nu)} + \smallO_{\P}(1)$
+\item \label{item:A2} $\Vert \hat{\nu}_n - \nu\Vert = \smallO_{\P}(n^{-1/4})$
+\end{enumerate}
+where $\nu = \nu(\P)$ is the ``true'' value of the nuisance parameter. Now, if $\phi$ is the
+canonical gradient, proposition~\ref{prop:eif-no} guarantees that the second component in
+(\ref{eq:target-decom}) vanishes, and hence, under assumptions~\ref{item:A1} and \ref{item:A2}, the
+expression simplifies to
+\begin{equation*}
+    \sqrt{n}
+  \left(
+    \hat{\theta}_n - \theta
+  \right)
+  = \G{\phi( O, \nu)} + \smallO_{\P}(1)
+\end{equation*}
+By the central limit theorem, the dominating term on the right hand side converges to a centered
+Gaussian distribution with variance equal to $\P[\phi(O, \nu)^2]$. By proposition~\ref{prop:cr},
+this is the inverse of the information bound, and hence the estimator $\hat{\theta}_n$ based on the
+canonical gradient achieves the information bound for $(\mathcal{P}, \TT)$.
 
-\fxnote*{I sort of feel like moving this to the next section?}{\textit{Debiasing property of an
-    estimator based on the canonical gradient.}} \fxnote*{It is not until here we need the
-  decomposition of \eqref{eq:target-decom}, am I right?}{The result shows that estimators} based on
-the canonical gradient has a ``build-in'' so-called \textit{debiasing} mechanism because the first
-order bias (the second expression in (\ref{eq:target-decom})), due to estimation of the nuisance
-parameter $\hat{\nu}_n$, vanishes. This debiasing mechanism is crucial for $n^{-1/2}$-rate inference
-of a target parameter in a statistical model with nuisance parameters that are not estimable at this
-rate themselves. 
+\begin{example}[Efficient estimation of the ATE]
+  Todo
+\end{example}
 
+To conclude this section about estimation, we connect our discussion about functional derivatives to
+the notion of \textit{influence functions} for \textit{regular asymptotically linear} estimators. An
+estimator $\hat{\theta}_n$ of the parameter $\theta = \TT(\P)$ under the model $\mathcal{P}$, is
+called asymptotically linear if there exists a function
+$\ic\colon \mathcal{O} \times \mathcal{P} \rightarrow \R$ with $\ic(\blank, \P) \in \lp$ and
+$\P[\ic(O, \P)]$ for all $\P \in \mathcal{P}$, such that
+\begin{equation*}
+  \hat{\theta}_n - \theta = \empmeas[\ic(O, \P)] + \smallO_{\P}(n^{-1/2}).
+\end{equation*}
+to avoid pathological counter-examples, an additional technical regularity condition is imposed,
+which gives the notion of \textit{regular} asymptotically linear (RAL) estimators.
+\fxnote*{vdVaart?}{(ref)}. The function $\ic$ is referred to as the \textit{influence function} of
+the RAL estimator. By the central limit theorem, every RAL estimator is asymptotically normally
+distributed with variance given by the squared expectation of its influence function, and hence
+every RAL estimator is uniquely characterized by its distribution function. 
+
+\fxnote[inline, nomargin]{... Connect both gradient and IF, or just \textit{canonical} and
+  \textit{efficient} IF?... Maybe both and then just say ``under regularity conditions''...?}
  
-
-\fxnote*{delete?}{The last result of the previous section demonstrates that estimators based on the
-  canonical gradient provide target parameter estimators with no first order bias. In this section
-  we show that they also provide \textit{efficient} estimators.}
-
-\fxnote*{briefly to this}{
-  \begin{itemize}
-  \item RAL estimators and IFs
-  \item Connection to canonical gradient
-  \end{itemize}
-}
-
-... The results of the previous section translate directly into nice properties of estimators that
-have the canonical gradient as their influence function
-
 \section{Further directions}
 \label{sec:further-directions}
 
