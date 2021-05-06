@@ -50,14 +50,15 @@ related topics that are neglected in this note.
 We use notation from empirical process theory and write $\P[f]$ for a (probability) measure $\P$ and
 a measurable function $f$ defined on the sample space $\mathcal{O}$ to mean
 \begin{equation*}
-  \P[f] := \E_{\P}[f(O)] = \int f(o) \diff \P(o),
+  \P[f] := \E_{\P}[f(O)] = \int f(o) \diff \P(o).
 \end{equation*}
-which allows us, for instance, to write the empirical average as
+This allows us to write the empirical average as
 \begin{equation*}
   \empmeas[f] = \frac{1}{n}\sum_{i=1}^{n}f(O_i).
 \end{equation*}
-We also use stochastic O-notation, $\smallO_{\P}$ and $\mathcal{O}_{\P}$: $X_n =
-\mathcal{O}_{\P}(1)$ means that the sequence $X_n$ is bounded in probability, and more generally
+We also use stochastic O-notation, $\smallO_{\P}$ and $\mathcal{O}_{\P}$.
+$X_n = \mathcal{O}_{\P}(1)$ means that the sequence $X_n$ is bounded in probability, and more
+generally
 \begin{equation*}
   X_n  = \mathcal{O}_{\P}(R_n)
   \quad \text{means} \quad   X_n  = Y_nR_n
@@ -70,7 +71,8 @@ and
   \quad \text{for some} \quad Y_n \arrowP 0.
 \end{equation*}
 For example, $X_n = \smallO_{\P}(n^{-1/2})$ means that $\sqrt{n}X_n \arrowP 0$, and
-$X_n = \smallO_{\P}(1)$ means that $X_n \arrowP 0$.
+$X_n = \smallO_{\P}(1)$ simply means that $X_n \arrowP 0$. This follows the notation used in, e.g.,
+\cite{van2000asymptotic}, see for instance chp.~2.
 
 
 \section{The average treatment effect as a statistical problem}
@@ -841,8 +843,6 @@ asymptotic variance will have the canonical gradient as its influence function.
 \section{Further directions and topics}
 \label{sec:further-directions}
 
-This section is not finished.
-
 \paragraph{Semi-parametric inference} In this note, our main example has been the ATE with no
 assumption on the model $\mathcal{P}$, which is called a fully non-parametric setting. We could
 change this by imposing assumptions on $\mathcal{P}$; for instance, we might assume randomization of
@@ -871,15 +871,31 @@ for instance the appendix of \cite{chernozhukov2018double}).
 \paragraph{Construction of estimators}
 In this note we have mostly been concerned with the mathematical theory involved in defining the
 canonical gradient and showing that estimator that have this gradient as their influence functions
-are attractive. \fxnote*{Finish and refs}{We have not considered ... TMLE}
-
-\paragraph{Double robustness}
-TODO
+are attractive. On the other hand, we have not been so much concerned with the actual
+\textit{construction} of such estimator, except for the short example~\ref{example:effi-ate} above.
+There, we constructed an estimator by solving the efficient score equation; a similar strategy is
+taken and considered in much more detail in \cite{chernozhukov2018double}. A different approach is
+taken in the targeted minimum loss-based estimator (TMLE) framework
+\citep{van2006targeted,van2011targeted}; good introductory sources for the framework are
+\cite{van2014targeted} and \cite{rosenblum2011simple}. 
 
 \paragraph{Nuisance estimators}
 In this note we have assumed we were given a nuisance estimator, such that \ref{item:A2} holds.
 However, this of course needs to be verified for the specific estimator of choice. For random forest
-some recent results can be found in \cite{wager2015adaptive,duroux2016impact,athey2019generalized}.
+some recent results in this direction can be found in
+\cite{wager2015adaptive,duroux2016impact,athey2019generalized}\fxnote*{More references for other
+  kinds of ML estimator?}{.}
+
+\paragraph{Doubly robustness}
+A more careful analysis of the remainder term
+$\mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2)$ from (\ref{eq:target-decom}) will
+in some cases show that this has the special form of a \textit{product} of two nuisance parameter
+estimation errors -- in particular, this holds for the ATE setting, where the remainder term becomes
+the product $\Vert \hat{\pi}_n - \pi_0 \Vert  \times \Vert \hat{f}_n - f_0 \Vert$. This implies that the
+estimator will be consistent if just \textit{one} of the nuisance estimators is correctly specified,
+and hence it is \textit{robust} again (some) model mis-specification. This topic has been analysis
+in many articles, see for instance \cite{glynn2010introduction} and \cite{bang2005doubly}.
+
 
 \paragraph{Undersmoothing}
 TODO
