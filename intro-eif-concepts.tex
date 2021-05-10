@@ -816,7 +816,7 @@ We can now connect our discussion about functional derivatives to the notion of 
   functions} for \textit{regular asymptotically linear} estimators. An estimator $\hat{\theta}_n$ of
 the parameter $\theta = \TT(\P)$ under the model $\mathcal{P}$, is called asymptotically linear if
 there exists a function $\ic\colon \mathcal{O} \times \mathcal{P} \rightarrow \R$ with
-$\ic(\blank, \P) \in \lp$ and $\P[\ic(O, \P)]$ for all $\P \in \mathcal{P}$, such that
+$\ic(\blank, \P) \in \lp$ and $\P[\ic(O, \P)] = 0$ for all $\P \in \mathcal{P}$, such that
 \begin{equation*}
   \hat{\theta}_n - \theta = \empmeas[\ic(O, \P)] + \smallO_{\P}(n^{-1/2}).
 \end{equation*}
@@ -843,16 +843,21 @@ asymptotic variance will have the canonical gradient as its influence function.
 
 \begin{example}[Efficient estimation of the ATE]
   \label{example:effi-ate}
-  Returning to the problem of estimating the average treatment effect, we already argued in
-  section~\ref{sec:funct-deriv} that the function $\phi_3$ defined in~(\ref{eq:ate-pars}) fulfills
-  the Neyman orthogonality condition. In fact, it can be shown $\phi_3 - \P[\phi_3]$ indeed is the
-  canonical gradient of the statistical problem $(\mathcal{P}, \TT)$ when we impose no assumptions
-  on the model $\mathcal{P}$. Hence, assuming~\ref{item:A1} and \ref{item:A2}, the discussion above
-  shows that the estimator $\TT_3(\empmeas, \hat{f}_n, \hat{\pi}_n)$ will converge to the true value
-  $\theta=\TT(\P)$ at $n^{-1/2}$-rate, and that this estimator is efficient, meaning that it is
-  asymptotically unbiased with the lowest possible asymptotic variance. In particular, with an
-  estimate of the asymptotic variance, we can construct a Wald confidence interval of the parameter
-  $\theta$, which will (asymptotically) be the smallest possible. 
+  Returning to the problem of estimating the average treatment effect,
+  we already argued in section~\ref{sec:funct-deriv} that the function
+  $\phi_3$ defined in~(\ref{eq:ate-pars}) fulfills the Neyman
+  orthogonality condition. In fact, it can be shown
+  $\phi_3 - \P[\phi_3]$ indeed is the canonical gradient of the
+  statistical problem $(\mathcal{P}, \TT)$ when we impose no
+  assumptions on the model $\mathcal{P}$. Hence,
+  assuming~\ref{item:A1} and \ref{item:A2}, the discussion above shows
+  that the estimator $\TT_3(\empmeas, \hat{f}_n, \hat{\pi}_n)$ will
+  converge to the true value $\theta=\TT(\P)$ at $n^{-1/2}$-rate, and
+  that this estimator is efficient, meaning that it is asymptotically
+  unbiased with the lowest possible asymptotic variance. In
+  particular, with an estimate of the asymptotic variance, we can
+  construct a Wald confidence interval of the parameter $\theta$,
+  which will (asymptotically) be the smallest possible.
 \end{example}
 
 \begin{remark}
