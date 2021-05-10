@@ -78,17 +78,22 @@ $X_n = \smallO_{\P}(1)$ simply means that $X_n \arrowP 0$. This follows the nota
 \section{The average treatment effect as a statistical problem}
 \label{sec:introduction}
 
-Many statistical problems are naturally formulated using one or more so-called \textit{nuisance
-  parameters}. A nuisance parameter is a components we need to introduce in our the statistical
-model, which is not of interest in itself, but is nevertheless needed to model the question of
-interest. First of all let us note that by a \textit{statistical problem} we formally mean the tuple
-$(\mathcal{P}, \TT)$, where $\mathcal{P}$ is a collection of probability measures and
-$\TT \colon \mathcal{P} \rightarrow \R$ is a functional defined on this collection of probability
-measures. The definition of $\mathcal{P}$ determines what kind of assumptions we make, while $\TT$
-is determined by our scientific question of interest. 
+Many statistical problems are naturally formulated using one or more
+so-called \textit{nuisance parameters}. A nuisance parameter is a
+component we need to introduce in our the statistical model, which is
+not of interest in itself, but is nevertheless needed to model the
+question of interest. First of all let us note that by a
+\textit{statistical problem} we formally mean the tuple
+$(\mathcal{P}, \TT)$, where $\mathcal{P}$ is a collection of
+probability measures and $\TT \colon \mathcal{P} \rightarrow \R$ is a
+functional defined on this collection of probability measures. The
+definition of $\mathcal{P}$ determines what kind of assumptions we
+make, while $\TT$ is determined by our scientific question of
+interest.
 
-We are particularly interested in statistical problems with infinite-dimensional nuisance parameter.
-A good example of this the average treatment effect (ATE) which will be our running example
+We are particularly interested in statistical problems with
+infinite-dimensional nuisance parameter.  A good example of this is
+the average treatment effect (ATE) which will be our running example
 throughout.
 
 \begin{example}[ATE]
@@ -309,17 +314,23 @@ further expand the above as
   + 
   \mathcal{O}_{\P}(\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2),
 \end{equation}
-where $\Vert \blank \Vert_{\mathcal{V}}$ is some norm defined on the space where the nuisance
-parameter $\nu$ takes it values; this would typically be a function space, so the norm could, for
-instance, be the $\mathcal{L}^2$-norm or the supremum-norm. The asymptotic analysis of each of the
-three components in (\ref{eq:target-decom}) requires some fairly advanced mathematical tools, and in
-this note we only focus on the second part. For the other two components we simply note that in many
-cases empirical process theory or sample splitting can be used to show that
-$\G{\phi(O, \hat{\nu}_n)} = \G{\phi(O, \nu)} + \smallO_{\P}(\sqrt{n})$, and that
-$\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}} = \smallO_{\P}(n^{-1/4})$ \fxnote*{is this
-  correct?}{has been established for several machine learning estimators} under the right conditions
-(see section~\ref{sec:further-directions} for a few additional comments on this). Assuming this two
-equations to hold, (\ref{eq:target-decom}) simplifies to
+where $\Vert \blank \Vert_{\mathcal{V}}$ is some norm defined on the
+space where the nuisance parameter $\nu$ takes it values; this would
+typically be a function space, so the norm could, for instance, be the
+$\mathcal{L}^2$-norm or the supremum-norm. The asymptotic analysis of
+each of the three components in (\ref{eq:target-decom}) requires some
+fairly advanced mathematical tools, and in this note we only focus on
+the second part. For the other two components we simply note that in
+many cases empirical process theory or sample splitting can be used to
+show that
+$\G{\phi(O, \hat{\nu}_n)} = \G{\phi(O, \nu)} +
+\smallO_{\P}(\sqrt{n})$, and that
+$\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}} = \smallO_{\P}(n^{-1/4})$
+\fxnote*{is this correct?}{has been established for several machine
+  learning estimators} under the right conditions (see
+section~\ref{sec:further-directions} for a few additional comments on
+this). Assuming these two equations to hold, (\ref{eq:target-decom})
+simplifies to
 \begin{equation*}
   \sqrt{n}
   \left(
@@ -354,14 +365,18 @@ problem can be estimated.
 \section{Functional derivatives and the canonical gradient}
 \label{sec:funct-deriv-can-grad}
 
-For infinite-dimensional spaces, unlike for $\R^d$, there are several sensible and non-equivalent
-ways of defining a derivative. In addition, again unlike for $\R^d$, for such spaces there are
-typically several, non-equivalent norms, which in turn determine which kind of functionals and
-operators are differentiable according to what definition. We do not consider these issues in much
-detail but only consider two types of derivatives, namely Gâteaux and Hadamard. We then consider
-some slight generalizations of the latter, and then, in subsection~\ref{sec:tang-spac-grad},
-describe in greater detail how Hadamard derivatives for a statistical problem can be represented;
-this allow us to derive some useful properties in subsection~\ref{sec:prop-canon-grad}.
+For infinite-dimensional spaces, unlike for $\R^d$, there are several
+sensible and non-equivalent ways of defining a derivative. In
+addition, again unlike for $\R^d$, for such spaces there are typically
+several, non-equivalent norms, which in turn determine which kind of
+functionals and operators are differentiable according to what
+definition. We do not consider these issues in much detail but only
+consider two types of derivatives, namely Gâteaux and Hadamard. We
+then consider some slight generalizations of the latter, and then, in
+subsection~\ref{sec:tang-spac-grad}, describe in greater detail how
+Hadamard derivatives for a statistical problem can be represented;
+this allows us to derive some useful properties in
+subsection~\ref{sec:prop-canon-grad}.
 
 \subsection{Functional derivatives}
 \label{sec:funct-deriv}
@@ -446,10 +461,10 @@ Comparing this definition with (\ref{eq:1}) we see that the only
 difference is that the linear approximation provided by $\dot{\TT}_x$
 should hold along any \textit{converging sequence} $h_n$ and not
 merely in a fixed direction $h$. For this reason Hadamard
-differentiability is also known a \textit{path-wise}
+differentiability is also known as \textit{path-wise}
 differentiability. A still stronger condition is to demand that the
 approximation should hold for any \textit{bounded sequence} $h_n$;
-this gives the concept of \textit{Fréchet} differentiability, which we 
+this gives the concept of \textit{Fréchet} differentiability, which we
 will not use in this text. One can show that \textit{if} a map is
 Hadamard (or Fréchet) differentiable, then the Hadamard (or Fréchet)
 derivative is equal to the Gâteaux derivative. Hence, to find the
@@ -458,12 +473,15 @@ is to first use high school math tools to calculate
 (\ref{eq:gateaux-prop}) and then verify that the obtained candidate
 fulfills the requirements of definition~\ref{def:hadamard-diff}.
 
-So far we have assumed the domain to be a \textit{linear} space. When working with probability
-measures, this is often not the case, and hence we need one final definition, which allows the
-operator $\TT$ and its derivative $\dot{\TT}$ to be defined only on subsets of the normed vector
-space $\mathcal{M}$. We should think of the following as mirroring differentiation of a multivariate
-function defined on a manifold embedded in a higher dimensional Euclidean space \fxnote*{Make a
-  picture}{(for instance, a surface embedded in $\R^3$)}.
+So far we have assumed the domain to be a \textit{linear} space. When
+working with probability measures, this is often not the case, and
+hence we need one final definition, which allows the operator $\TT$
+and its derivative $\dot{\TT}$ to be defined only on subsets of the
+normed vector space $\mathcal{M}$. We should think of the following as
+mirroring differentiation of a multivariate function defined on a
+manifold embedded in a higher dimensional Euclidean space
+\fxnote*{Make a picture}{(for instance, a surface embedded in
+  $\R^3$)}.
 
 \begin{definition}[Tangential Hadamard derivative]
   Let $\mathcal{P}$ and $\dot{\mathcal{P}}_x$ be subsets of the normed real vector space
@@ -488,14 +506,18 @@ $\dot{\mathcal{P}}_x$.
 \subsection{Tangent spaces and gradients for statistical problems}
 \label{sec:tang-spac-grad}
 
-Using the tools introduces so far, we can now define the so-called \textit{tangent space for the
-  model $\mathcal{P}$} and then formally define the derivative of the map
-$\TT\colon\mathcal{P} \rightarrow \R$ from the statistical problem $(\mathcal{P}, \TT)$. We refer to
-this derivative as the \textit{canonical gradient}, or later in section~\ref{sec:estim-based-canon}
-the \textit{efficient influence function}. The canonical gradient is a central component in our
-analysis of the statistical problem as it represents the optimal asymptotic variance
-(proposition~\ref{prop:cr}); in addition it allows us to construct estimators with vanishing first
-order bias (proposition~\ref{prop:eif-no} and section~\ref{sec:estim-based-canon}).
+Using the tools introduced so far, we can now define the so-called
+\textit{tangent space for the model $\mathcal{P}$} and then formally
+define the derivative of the map $\TT\colon\mathcal{P} \rightarrow \R$
+from the statistical problem $(\mathcal{P}, \TT)$. We refer to this
+derivative as the \textit{canonical gradient}, or later in
+section~\ref{sec:estim-based-canon} the \textit{efficient influence
+  function}. The canonical gradient is a central component in our
+analysis of the statistical problem as it represents the optimal
+asymptotic variance (proposition~\ref{prop:cr}); in addition it allows
+us to construct estimators with vanishing first order bias
+(proposition~\ref{prop:eif-no} and
+section~\ref{sec:estim-based-canon}).
 
 As shown in the previous subsection, to be able to talk about differentiability of the statistical
 problem $(\mathcal{P}, \TT)$, we need to embed the model $\mathcal{P}$ into a suitable normed vector
@@ -528,11 +550,13 @@ $\mathcal{M}_{\mu}$ of finite signed measures dominated by $\mu$ equipped with t
   \end{equation*}
 \end{definition}
 
-The definition of a tangent space for a collection of probability measures simple mimics the
-definition of a tangent space for a surface embedded in $\R^3$: We move along differentiable paths
-through a given point on the surface, and the tangent space is then the span of the derivatives of
-all such paths. With a differentiable structure on the collection $\mathcal{P}$ we can talk about a
-\textit{gradient} of a functional defined on this set.
+The definition of a tangent space for a collection of probability
+measures simply mimics the definition of a tangent space for a surface
+embedded in $\R^3$: We move along differentiable paths through a given
+point on the surface, and the tangent space is then the span of the
+derivatives of all such paths. With a differentiable structure on the
+collection $\mathcal{P}$ we can talk about a \textit{gradient} of a
+functional defined on this set.
 
 \begin{definition}[Canonical gradient]
   \label{def:tangt-space-prob}
@@ -713,15 +737,19 @@ of interest $\TT(\P_t)$, the optimal asymptotic variance is
   \label{eq:4}
   \frac{(\partial_{0}{\TT(\P_t)})^2}{\P[\dot{\ell}_0^2]},
 \end{equation}
-where $\dot{\ell}_0$ is the score of the model, i.e., $\P[\dot{\ell}_0^2]$ is the Fisher
-information. Hence, the information bound for the parameter $\theta= \TT(\P_t)$ in this model is
-defined as the inverse of (\ref{eq:4}). Now, a statistical problem with an infinite-dimensional
-model $\mathcal{P}$ contains all the one-dimensional submodels
-$\{\P_{\epsilon}\} \subset \mathcal{P}$, first introduced in definition~\ref{def:tangt-space-prob};
-each of these models have information bound wrt.\ $\TT(\P_{\epsilon})$ given by the inverse of
-(\ref{eq:4}), and hence it is natural to define the information bound for the whole model as
-information bound for the \textit{least informative submodel}. Formally, this means we define the
-information bound of the statistical problem $(\mathcal{P}, \TT)$ as
+where $\dot{\ell}_0$ is the score of the model, i.e., 
+$\P[\dot{\ell}_0^2]$ is the Fisher information. Hence, the information
+bound for the parameter $\theta= \TT(\P_t)$ in this model is defined
+as the inverse of (\ref{eq:4}). Now, a statistical problem with an
+infinite-dimensional model $\mathcal{P}$ contains all the
+one-dimensional submodels $\{\P_{\epsilon}\} \subset \mathcal{P}$,
+first introduced in definition~\ref{def:tangt-space-prob}; each of
+these models have information bound wrt.\ $\TT(\P_{\epsilon})$ given
+by the inverse of (\ref{eq:4}), and hence it is natural to define the
+information bound for the whole model as the information bound for the
+\textit{least informative submodel}. Formally, this means we define
+the information bound of the statistical problem $(\mathcal{P}, \TT)$
+as
 \begin{equation*}
   \mathcal{I}(\mathcal{P}, \TT)  := \inf
   \left\{
@@ -888,13 +916,17 @@ some recent results in this direction can be found in
 
 \paragraph{Doubly robustness}
 A more careful analysis of the remainder term
-$\mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2)$ from (\ref{eq:target-decom}) will
-in some cases show that this has the special form of a \textit{product} of two nuisance parameter
-estimation errors -- in particular, this holds for the ATE setting, where the remainder term becomes
-the product $\Vert \hat{\pi}_n - \pi_0 \Vert  \times \Vert \hat{f}_n - f_0 \Vert$. This implies that the
-estimator will be consistent if just \textit{one} of the nuisance estimators is correctly specified,
-and hence it is \textit{robust} again (some) model mis-specification. This topic has been analysis
-in many articles, see for instance \cite{glynn2010introduction} and \cite{bang2005doubly}.
+$\mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2)$ from
+(\ref{eq:target-decom}) will in some cases show that this has the
+special form of a \textit{product} of two nuisance parameter
+estimation errors -- in particular, this holds for the ATE setting,
+where the remainder term becomes the product
+$\Vert \hat{\pi}_n - \pi_0 \Vert \times \Vert \hat{f}_n - f_0
+\Vert$. This implies that the estimator will be consistent if just
+\textit{one} of the nuisance estimators is correctly specified, and
+hence it is \textit{robust} again (some) model mis-specification. This
+topic has been analyzed in many articles, see for instance
+\cite{glynn2010introduction} and \cite{bang2005doubly}.
 
 
 \paragraph{Undersmoothing}
