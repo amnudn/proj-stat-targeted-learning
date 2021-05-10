@@ -1,0 +1,366 @@
+* Setting
+** Disclaimer
+#+ATTR_LATEX: :options [<+->]
+- The note is work in progress, and we have not used it before -- you are very welcome to comment on
+  weird/unclear passages. 
+- You should see it as a service -- some exact mathematical statements are collected there if you
+  care about it, but the important part is the intuition which we talk about today. 
+- Do NOT write like this in your report!
+** A statistical problem
+We call a collection of probability measures $\mathcal{P}$ together with a functional $\TT \colon
+\mathcal{P} \rightarrow \R$ /a statistical problem/.
+
+\vfill
+
+*** Average treatment effect                                      :B_example:
+    :PROPERTIES:
+    :BEAMER_act: <2->
+    :BEAMER_env: example
+    :END:
+#+BEGIN_EXPORT latex
+We are given $n$ iid. sample of $O \sim \P$, with \alt<3>{$\P \in
+  \color{red}{\mathcal{P}}$}{$\P \in \mathcal{P}$} and where \(O= (X, A, Y)\), with \(X\in \R^d\),
+\(A\in \lbrace 0,1\rbrace\), and \(Y\in\lbrace 0, 1\rbrace\). We want to estimate the average
+treatment effect
+\begin{equation*}
+  \E_{\P}\left[ f(1, X) - f(0, X) \right],  
+\end{equation*}
+with $f(a, x) := \E_{\P}\left[ Y \mid A=a, X=x  \right]$. The target parameter is
+\begin{equation*}
+  \alt<3>{{\color{red}\TT}}{\TT}(\P) =  \E_{\P}\left[ f_{\P}(1, X) - f_{\P}(0, X) \right].
+\end{equation*}
+#+END_EXPORT
+
+** Target and nuisance parameters
+- Target parameter :: Low-dimensional, scientifically meaningful. \pause
+- Nuisance parameters :: Needed to express the target parameter. \pause
+
+*** ATE                                                           :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+The ATE can be written as $\TT(\P) = \P[\phi_1] = \P[\phi_2] = \P[\phi_3]$, for
+\begin{equation*}
+  \begin{gathered}
+    \phi_1(o; f) := f(1,x) - f(0,x), \\
+    \phi_2(o; \pi) := \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)}, \\
+    \phi_3(o; f, \pi) := \phi_1(o; f) + \phi_2(o; \pi) - \frac{a\,f(1,x)}{\pi(x)} +
+    \frac{(1-a)\,f(0,x)}{1-\pi(x)} 
+  \end{gathered}
+\end{equation*}
+
+#+BEGIN_EXPORT latex
+$\P[\phi]$ means
+\begin{equation*}
+  \P[\phi] = \E_{\P}\left[ \phi(O) \right] = \int \phi(o) \diff \P(o).
+\end{equation*}
+#+END_EXPORT
+
+** High-/infinite-dimensional nuisance parameters
+A parametric setting means that $\mathcal{P}$ is finite-dimensional. We are interested in
+/nonparametric/ or /semiparametric/ settings which mean that $\mathcal{P}$ is
+infinite-dimensional.
+
+\vfill \pause
+
+*** gray                                        :B_beamercolorbox:
+    :PROPERTIES:
+    :BEAMER_env: beamercolorbox
+    :BEAMER_opt: rounded=true
+    :END:
+\centering Having our data set and scientific question in mind, why would it be of interest to use
+infinite-dimensional nuisance parameters?
+
+***                                                         :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+\vfill \pause
+Trying to control for confounding $\implies$ nice to have:
+- flexible model
+- many covariates
+
+* Motivation
+** Toy example: Integrated kernel density
+#+BEGIN_EXPORT latex
+$\mathcal{P}$ consist all probability measures with continuous Lebesgue-density (this is an
+infinite-dimensional space). We want to estimate $F(x) = \P(X \leq x)$ for unknown
+$\P \in \mathcal{P}$. \pause Our target parameter is then $\theta = \TT(\P) = F_{\P}(x)$ which we
+can express as
+\begin{equation*}
+  \TT(\P) = \TT_0(f) := \int_{-\infty}^x f(z) \diff z, \quad \text{for} \quad \P = f \cdot \leb,
+\end{equation*}
+because of our assumption about $\mathcal{P}$. \pause We want to use \textbf{machine learning} (!) for this problem,
+so use a kernel estimator, i.e.,
+\begin{equation*}
+  \hat{f}_n(x) = \empmeas[k_h(X, x)] = \frac{1}{n}\sum_{i=1}^{n}k_h(X_i, x),
+\end{equation*}
+where $k_h$ is, e.g, $k_h(x,y) = g\left( \frac{x-y}{h} \right)$, with $g$ the density for the
+standard Gaussian distribution, and the bandwidth $h$ is chosen using cross-validation. \pause We
+then obtain the target estimator $\hat{\theta}_n = \TT_0(\hat{f}_n)$.
+#+END_EXPORT
+
+** How does this work in practice?
+\pause
+#+ATTR_LATEX: :width 0.75\textwidth
+[[./figures/kernel-undersmooth-viz-presentation-3.pdf]]
+
+** What happened? 
+\pause
+
+Consider a general problem $(\mathcal{P}, \TT)$ for which we can write $\TT(\P) = \TT_0(\P, \nu) =
+\P[\phi(O, \nu)]$. \pause We have
+#+BEGIN_EXPORT latex
+\begin{align*}
+  \sqrt{n}
+  \left(
+  \hat{\theta}_n - \theta
+  \right)
+  & =  \sqrt{n}
+    \left(
+    \TT_0(\empmeas,\hat{\nu}_n) - \TT_0(\P,\nu)
+    \right) \\
+  & =
+    \sqrt{n}
+    \left(
+    \empmeas[\phi(O, \hat{\nu}_n)] -
+    \P[\phi(O, \nu)]
+    \right) \\
+  & =
+    \sqrt{n}
+    \left(
+    \empmeas[\phi(O, \hat{\nu}_n)] 
+    \pm \P[\phi(O, \hat{\nu}_n)] % + \P[\phi(O, \hat{\nu}_n)]
+    - \P[\phi(O, \nu)]
+    \right)    \\
+  & =
+    \G{\phi(O, \hat{\nu}_n) } +
+    \sqrt{n} 
+    \left\{
+    \TT_0(\P,  \hat{\nu}_n) - \TT_0(\P,  \nu)
+    \right\},
+\end{align*}
+with $\mathbb{G}_n: = \sqrt{n}(\empmeas -\P)$ the empirical process.
+#+END_EXPORT
+
+\vfill \pause
+
+#+ATTR_LATEX: :options [<+->]
+- $\G{\phi(O, \hat{\nu}_n) }$ :: determines the (main) variance
+- $\TT_0(\P,  \hat{\nu}_n) - \TT_0(\P,  \nu)$ :: is bias!
+
+** What to do?  -- Taylor expansion
+\pause
+#+BEGIN_EXPORT latex
+Assume we could make a Taylor expansion of $\nu \mapsto \TT_0(\P, \nu)$, so that
+\begin{equation*}
+  \TT_0(\P,  \hat{\nu}_n) - \TT_0(\P,  \nu)
+  = \mathrm{D}_{\nu}{\TT_0}[\hat{\nu}_n - \nu] +
+  \mathcal{O}_{\P}(\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2).
+\end{equation*}
+\pause The decomposition then becomes
+\begin{align}
+  \sqrt{n}
+  \left(
+  \hat{\theta}_n - \theta
+  \right)
+  = \; & \G{\phi( O, \hat{\nu}_n)} \\
+    & + \mathrm{D_{\nu}{\TT_0}}{ \left[
+      \sqrt{n}(\hat{\nu}_n - \nu)
+      \right]} \\
+    &  +  \mathcal{O}_{\P}(\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2).
+\end{align}
+\pause
+\begin{enumerate}[(1)]
+\item can be handled by empirical process theory or sample splitting \pause
+\item is our focus! $\rightarrow$ make sense of this \pause
+\item is specific to the nuisance estimator (and the functional $\TT$). Importantly, the rate
+  $\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}} = \smallO_{\P}(n^{-1/4})$ is sufficient.
+\end{enumerate}
+#+END_EXPORT
+
+* Functional derivatives
+** Defining a functional derivative
+*** What is a derivative? \pause
+A linear approximation $\dot{\TT}_x$ to the map $\TT$ at $x \in \mathcal{M}$, i.e.,
+  \begin{equation*}
+    \left\Vert
+      \TT(x + \epsilon_n h_n) - \TT(x) - \dot{\TT}_x(\epsilon_n h_n)
+    \right\Vert = \smallO(\epsilon_n),
+  \end{equation*}
+when $\epsilon_n \rightarrow 0$.
+
+\pause \hfill
+***                                                         :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+
+This expression also makes sense for functionals (or operators) $\TT$.
+
+\pause \hfill
+
+#+ATTR_LATEX: :options [<+->]
+- For which $h_n$ should this hold? Along "lines", "paths", or "uniformly" ($h_n$ fixed,
+  converging, or bounded)?
+- Which norm on $\mathcal{M}$ should we use?
+- In which space should we represent $\mathcal{P}$?
+
+** Pathwise Hadamard differentiability
+Think of the gradient of a map defined on a manifold (surface).
+
+#+ATTR_LATEX: :width 0.9\textwidth
+[[./figures/pathwise-dif.pdf]]
+
+
+* Canonical gradient / efficient influence function
+** Canonical gradient
+*** Canonical gradient                                         :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+  Let $(\mathcal{P}, \TT)$ be a statistical problem, with $\mathcal{P} \subset \mathcal{M}_{\mu}$,
+  and $\dot{\mathcal{P}}_{\P}$ the tangent space of $\mathcal{P}$ at $\P \in \mathcal{P}$. If
+  $\TT \colon \mathcal{P} \rightarrow \R$ is Hadamard differentiable at $\P$ tangential to
+  $\dot{\mathcal{P}}_{\P}$, we refer to the Hadamard derivative $\dot{\TT}_{\P}$ as the
+  \textit{canonical gradient of the statistical problem}.
+
+\pause
+
+*** Characterizing property
+#+BEGIN_EXPORT latex
+With $\Gamma_{\P} := \overline{\mathrm{span}}\{\dot{\ell}_0\} \subset \lp$, where
+$\dot{\ell}_0 = \partial_0{\log(\P_{\epsilon})}$ is the score function of the sub-model
+$\P_{\epsilon}$, there exists a unique element $\phi_{\P} \in \Gamma_{\P}$ such that
+\begin{equation*}
+  \partial_0{\TT(\P_{\epsilon})}
+  = \langle \phi_{\P}, \dot{\ell}_0 \rangle_{\P}
+\end{equation*}
+holds for any differentiable submodel $\P_{\epsilon}$ with score function $\dot{\ell}_0$.
+#+END_EXPORT
+
+** Canonical gradient for the ATE
+*** ATE                                                           :B_example:
+    :PROPERTIES:
+    :BEAMER_env: example
+    :END:
+
+When we make no assumptions about $\mathcal{P}$, the canonical gradient for the ATE problem
+#+BEGIN_EXPORT latex
+\begin{align*}
+  \phi_{\P}(o; f, \pi) := \;& f(1,x) - f(0,x) \\
+                             & +  \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)} \\
+                             &  - \frac{a\,f(1,x)}{\pi(x)} +
+                               \frac{(1-a)\,f(0,x)}{1-\pi(x)} \\
+                             &  - \TT(\P)
+\end{align*}
+\pause One way to show this is to first show that the tangent space $\Gamma_{\P}$ is the full subset
+$\mathbb{H}_0 \subset \lp$ of zero-mean functions, and then show that
+$ \partial_0{\TT(\P_{\epsilon})} = \langle \phi_{\P}, \dot{\ell}_0 \rangle_{\P}$ for all
+$\P_{\epsilon}$ (see for instance \cite{kennedy2016semiparametric}).
+#+END_EXPORT
+
+* Summary of main results
+** Neyman orthogonality
+*** Neyman orthogonality                                          :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :END:
+#+BEGIN_EXPORT latex
+If $\TT(\P) = \TT_0(\P, \nu) = \P[\phi(O, \nu(\P))]$ and $\phi(\blank, \nu) - \P[\phi(O, \nu)]$ is the
+canonical gradient of $(\mathcal{P}, \TT)$ then $\mathrm{D_{\nu}{\TT_0}} = 0$.
+#+END_EXPORT
+
+\hfill \pause
+
+*** Debiasing
+The /first order/ bias, coming from $\TT_0(\P, \hat{\nu}_n) - \TT_0(\P, \nu)$, is removed. 
+# \pause (This also holds for gradients.)
+
+** Efficiency
+*** RAL estimators                                             :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+#+BEGIN_EXPORT latex
+An estimator $\hat{\theta}_n$ of the parameter $\theta = \TT(\P)$ under the model $\mathcal{P}$, is
+called \textit{asymptotically linear} with \textit{influence function} $\ic(\blank, \P) \in \lp$, if 
+$\P[\ic(O, \P)] = 0$ for all $\P \in \mathcal{P}$, and 
+\begin{equation*}
+  \hat{\theta}_n - \theta = \empmeas[\ic(O, \P)] + \smallO_{\P}(n^{-1/2}).
+\end{equation*}
+#+END_EXPORT
+
+*** Efficient influence function                                  :B_theorem:
+    :PROPERTIES:
+    :BEAMER_env: theorem
+    :BEAMER_act: <2->
+    :END:
+    
+The RAL estimator with lowest possible asymptotic variance has the canonical gradient as its
+influence function.
+
+* Next step -- constructing estimator
+** Constructing estimators: Solve the efficient score equation
+Find a parametrization $\TT(\P) = \P[\phi(O, \nu)]$ such that $\phi$ is the (canonical) gradient.
+Then by Neyman orthogonality and assumptions we can write
+#+BEGIN_EXPORT latex
+\begin{align*}
+  \sqrt{n}
+  \left(
+  \hat{\theta}_n - \theta
+  \right)
+  = \; & \G{\phi( O, \hat{\nu}_n)} \uncover<3->{&& {\color{red}= \G{\phi( O, \nu)}}} \\
+       & + \mathrm{D_{\nu}{\TT_0}}{ \left[
+         \sqrt{n}(\hat{\nu}_n - \nu)
+         \right]} \uncover<2->{&& {\color{red}= 0}}\\
+       &  +  \mathcal{O}_{\P}(\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2) 
+         \uncover<3->{&& {\color{red}=  \smallO_{\P}(1)}} \\[0.18cm]
+  \uncover<4->{= \; & \G{\phi( O, \nu)} + \smallO_{\P}(1).}
+\end{align*}
+\uncover<5->{Hence $\hat{\theta}_n$ is a RAL estimator, and if $\phi - \P[\phi]$ is the canonical gradient it
+  will be \textit{asymptotically efficient}.}
+
+\hfill
+
+\uncover<6->{This is the approach taken in \cite{chernozhukov2018double}. See also Example~4.1 of
+  the note.}
+#+END_EXPORT
+
+
+** TMLE
+* References
+\tiny \bibliography{./latex-settings/default-bib.bib}
+
+* HEADER :noexport:
+#+TITLE: Influence functions and functional derivatives
+#+Author: Anders Munch
+#+Date: May 11, 2021
+
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:t ':t ^:t
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_HEADER: \usepackage{natbib, dsfont, pgfpages, tikz,amssymb, amsmath,xcolor}
+#+LaTeX_HEADER: \bibliographystyle{abbrvnat}
+#+LaTeX_HEADER: \input{./latex-settings/standard-commands.tex}
+#+BIBLIOGRAPHY: ./latex-settings/default-bib plain
+
+# Beamer settins:
+# #+LaTeX_HEADER: \usefonttheme[onlymath]{serif} 
+#+LaTeX_HEADER: \setbeamertemplate{footline}[frame number]
+#+LaTeX_HEADER: \beamertemplatenavigationsymbolsempty
+#+LaTeX_HEADER: \usepackage{appendixnumberbeamer}
+#+LaTeX_HEADER: \setbeamercolor{gray}{bg=white!90!black}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+
+# Check this:
+# #+LaTeX_HEADER: \lstset{basicstyle=\ttfamily\small}
+
+# For handout mode: (check order...)
+# #+LATEX_CLASS_OPTIONS: [handout]
+# #+LaTeX_HEADER: \pgfpagesuselayout{4 on 1}[border shrink=1mm]
+# #+LaTeX_HEADER: \pgfpageslogicalpageoptions{1}{border code=\pgfusepath{stroke}}
+# #+LaTeX_HEADER: \pgfpageslogicalpageoptions{2}{border code=\pgfusepath{stroke}}
+# #+LaTeX_HEADER: \pgfpageslogicalpageoptions{3}{border code=\pgfusepath{stroke}}
+# #+LaTeX_HEADER: \pgfpageslogicalpageoptions{4}{border code=\pgfusepath{stroke}}
