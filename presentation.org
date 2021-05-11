@@ -1,5 +1,5 @@
 * Setting
-** Disclaimer
+** Disclaimer about the note
 #+ATTR_LATEX: :options [<+->]
 - The note is work in progress, and we have not used it before -- you are very welcome to comment on
   weird/unclear passages. 
@@ -31,7 +31,8 @@ with $f(a, x) := \E_{\P}\left[ Y \mid A=a, X=x  \right]$. The target parameter i
 \end{equation*}
 #+END_EXPORT
 
-** Target and nuisance parameters
+** Target and nuisance parameters 
+\pause
 - Target parameter :: Low-dimensional, scientifically meaningful. \pause
 - Nuisance parameters :: Needed to express the target parameter. \pause
 
@@ -45,10 +46,17 @@ The ATE can be written as $\TT(\P) = \P[\phi_1] = \P[\phi_2] = \P[\phi_3]$, for
     \phi_1(o; f) := f(1,x) - f(0,x), \\
     \phi_2(o; \pi) := \frac{a\,y}{\pi(x)} - \frac{(1-a)\,y}{1-\pi(x)}, \\
     \phi_3(o; f, \pi) := \phi_1(o; f) + \phi_2(o; \pi) - \frac{a\,f(1,x)}{\pi(x)} +
-    \frac{(1-a)\,f(0,x)}{1-\pi(x)} 
+    \frac{(1-a)\,f(0,x)}{1-\pi(x)},
   \end{gathered}
 \end{equation*}
+with $f(a, x) := \E_{\P}\left[ Y \mid A=a, X=x  \right]$, $\pi(x) := \P(A=1 \mid X=x)$.
 
+\vfill
+
+*** Notation                                                :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
 #+BEGIN_EXPORT latex
 $\P[\phi]$ means
 \begin{equation*}
@@ -56,7 +64,7 @@ $\P[\phi]$ means
 \end{equation*}
 #+END_EXPORT
 
-** High-/infinite-dimensional nuisance parameters
+** Infinite-dimensional nuisance parameters
 A parametric setting means that $\mathcal{P}$ is finite-dimensional. We are interested in
 /nonparametric/ or /semiparametric/ settings which mean that $\mathcal{P}$ is
 infinite-dimensional.
@@ -95,7 +103,7 @@ so use a kernel estimator, i.e.,
 \begin{equation*}
   \hat{f}_n(x) = \empmeas[k_h(X, x)] = \frac{1}{n}\sum_{i=1}^{n}k_h(X_i, x),
 \end{equation*}
-where $k_h$ is, e.g, $k_h(x,y) = g\left( \frac{x-y}{h} \right)$, with $g$ the density for the
+where $k_h$ is, e.g, $k_h(x,y) = \frac{1}{h}k\left( \frac{x-y}{h} \right)$, with $k$ the density for the
 standard Gaussian distribution, and the bandwidth $h$ is chosen using cross-validation. \pause We
 then obtain the target estimator $\hat{\theta}_n = \TT_0(\hat{f}_n)$.
 #+END_EXPORT
@@ -173,9 +181,11 @@ Assume we could make a Taylor expansion of $\nu \mapsto \TT_0(\P, \nu)$, so that
 \pause
 \begin{enumerate}[(1)]
 \item can be handled by empirical process theory or sample splitting \pause
-\item is our focus! $\rightarrow$ make sense of this \pause
-\item is specific to the nuisance estimator (and the functional $\TT$). Importantly, the rate
-  $\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}} = \smallO_{\P}(n^{-1/4})$ is sufficient.
+\item \alt<7>{{\color{red}is our focus! $\rightarrow$ make sense of this}}{is our focus!
+    $\rightarrow$ make sense of this} \pause
+\item is specific to the functional $\TT$, but importantly the rate
+  $\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}} = \smallO_{\P}(n^{-1/4})$ is sufficient;
+  whether this holds then depends on the specific nuisance estimator.
 \end{enumerate}
 #+END_EXPORT
 
@@ -218,7 +228,6 @@ Think of the gradient of a function defined on a manifold (surface).
 #+ATTR_LATEX: :width 0.9\textwidth
 [[./figures/Pathwise-derivative0.pdf]]
 
-
 *** overlay block 
     :PROPERTIES:
     :BEAMER_act: <2>
@@ -236,8 +245,6 @@ Think of the gradient of a function defined on a manifold (surface).
     
 #+ATTR_LATEX: :width 0.9\textwidth
 [[./figures/Pathwise-derivative2.pdf]]
-
-
 
 * Canonical gradient / efficient influence function
 ** Canonical gradient
@@ -303,9 +310,10 @@ canonical gradient of $(\mathcal{P}, \TT)$ then $\mathrm{D_{\nu}{\TT_0}} = 0$.
 The /first order/ bias, coming from $\TT_0(\P, \hat{\nu}_n) - \TT_0(\P, \nu)$, is removed. 
 # \pause (This also holds for gradients.)
 
-** Efficiency
+** Efficiency 
 *** RAL estimators                                             :B_definition:
     :PROPERTIES:
+    :BEAMER_act: <2->
     :BEAMER_env: definition
     :END:
 #+BEGIN_EXPORT latex
@@ -320,15 +328,15 @@ $\P[\ic(O, \P)] = 0$ for all $\P \in \mathcal{P}$, and
 *** Efficient influence function                                  :B_theorem:
     :PROPERTIES:
     :BEAMER_env: theorem
-    :BEAMER_act: <2->
+    :BEAMER_act: <3->
     :END:
     
 The RAL estimator with lowest possible asymptotic variance has the canonical gradient as its
 influence function.
 
-* Next step -- constructing estimator
-** Constructing estimators: Solve the efficient score equation
-Find a parametrization $\TT(\P) = \P[\phi(O, \nu)]$ such that $\phi$ is the (canonical) gradient.
+* Next step -- constructing estimators
+** Constructing estimators 1: Solve the efficient score equation
+\pause Find a parametrization $\TT(\P) = \P[\phi(O, \nu)]$ such that $\phi$ is the (canonical) gradient.
 \pause Then by Neyman orthogonality and assumptions we can write
 #+BEGIN_EXPORT latex
 \begin{align*}
@@ -353,8 +361,7 @@ Find a parametrization $\TT(\P) = \P[\phi(O, \nu)]$ such that $\phi$ is the (can
   the note.}
 #+END_EXPORT
 
-
-** TMLE
+** Constructing estimators 2: TMLE
 ** References
 \small \bibliography{./latex-settings/default-bib.bib}
 
