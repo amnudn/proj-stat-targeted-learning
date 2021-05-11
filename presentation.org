@@ -207,7 +207,7 @@ This expression also makes sense for functionals (or operators) $\TT$.
 - In which space should we represent $\mathcal{P}$?
 
 ** Pathwise Hadamard differentiability
-Think of the gradient of a map defined on a manifold (surface).
+Think of the gradient of a function defined on a manifold (surface).
 
 #+ATTR_LATEX: :width 0.9\textwidth
 [[./figures/pathwise-dif.pdf]]
@@ -230,7 +230,7 @@ Think of the gradient of a map defined on a manifold (surface).
 *** Characterizing property
 #+BEGIN_EXPORT latex
 With $\Gamma_{\P} := \overline{\mathrm{span}}\{\dot{\ell}_0\} \subset \lp$, where
-$\dot{\ell}_0 = \partial_0{\log(\P_{\epsilon})}$ is the score function of the sub-model
+$\dot{\ell}_0 = \partial_0{\log(p_{\epsilon})}$ is the score function of the sub-model
 $\P_{\epsilon}$, there exists a unique element $\phi_{\P} \in \Gamma_{\P}$ such that
 \begin{equation*}
   \partial_0{\TT(\P_{\epsilon})}
@@ -303,34 +303,34 @@ influence function.
 * Next step -- constructing estimator
 ** Constructing estimators: Solve the efficient score equation
 Find a parametrization $\TT(\P) = \P[\phi(O, \nu)]$ such that $\phi$ is the (canonical) gradient.
-Then by Neyman orthogonality and assumptions we can write
+\pause Then by Neyman orthogonality and assumptions we can write
 #+BEGIN_EXPORT latex
 \begin{align*}
   \sqrt{n}
   \left(
   \hat{\theta}_n - \theta
   \right)
-  = \; & \G{\phi( O, \hat{\nu}_n)} \uncover<3->{&& {\color{red}= \G{\phi( O, \nu)}}} \\
+  = \; & \G{\phi( O, \hat{\nu}_n)} \uncover<4->{&& {\color{red}= \G{\phi( O, \nu)}}} \\
        & + \mathrm{D_{\nu}{\TT_0}}{ \left[
          \sqrt{n}(\hat{\nu}_n - \nu)
-         \right]} \uncover<2->{&& {\color{red}= 0}}\\
+         \right]} \uncover<3->{&& {\color{red}= 0}}\\
        &  +  \mathcal{O}_{\P}(\sqrt{n}\Vert \hat{\nu}_n - \nu \Vert_{\mathcal{V}}^2) 
-         \uncover<3->{&& {\color{red}=  \smallO_{\P}(1)}} \\[0.18cm]
-  \uncover<4->{= \; & \G{\phi( O, \nu)} + \smallO_{\P}(1).}
+         \uncover<4->{&& {\color{red}=  \smallO_{\P}(1)}} \\[0.18cm]
+  \uncover<5->{= \; & \G{\phi( O, \nu)} + \smallO_{\P}(1).}
 \end{align*}
-\uncover<5->{Hence $\hat{\theta}_n$ is a RAL estimator, and if $\phi - \P[\phi]$ is the canonical gradient it
+\uncover<6->{Hence $\hat{\theta}_n$ is a RAL estimator, and if $\phi - \P[\phi]$ is the canonical gradient it
   will be \textit{asymptotically efficient}.}
 
 \hfill
 
-\uncover<6->{This is the approach taken in \cite{chernozhukov2018double}. See also Example~4.1 of
+\uncover<7->{This is the approach taken in \cite{chernozhukov2018double}. See also Example~4.1 of
   the note.}
 #+END_EXPORT
 
 
 ** TMLE
-* References
-\tiny \bibliography{./latex-settings/default-bib.bib}
+** References
+\small \bibliography{./latex-settings/default-bib.bib}
 
 * HEADER :noexport:
 #+TITLE: Influence functions and functional derivatives
