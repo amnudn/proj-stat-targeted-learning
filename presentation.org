@@ -209,8 +209,34 @@ This expression also makes sense for functionals (or operators) $\TT$.
 ** Pathwise Hadamard differentiability
 Think of the gradient of a function defined on a manifold (surface).
 
+*** overlay block 
+    :PROPERTIES:
+    :BEAMER_act: <1>
+    :BEAMER_env: onlyenv
+    :END:
+    
 #+ATTR_LATEX: :width 0.9\textwidth
-[[./figures/pathwise-dif.pdf]]
+[[./figures/Pathwise-derivative0.pdf]]
+
+
+*** overlay block 
+    :PROPERTIES:
+    :BEAMER_act: <2>
+    :BEAMER_env: onlyenv
+    :END:
+    
+#+ATTR_LATEX: :width 0.9\textwidth
+[[./figures/Pathwise-derivative1.pdf]]
+
+*** overlay block 
+    :PROPERTIES:
+    :BEAMER_act: <3>
+    :BEAMER_env: onlyenv
+    :END:
+    
+#+ATTR_LATEX: :width 0.9\textwidth
+[[./figures/Pathwise-derivative2.pdf]]
+
 
 
 * Canonical gradient / efficient influence function

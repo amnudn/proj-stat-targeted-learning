@@ -1,4 +1,4 @@
-% Created 2021-05-11 Tue 07:10
+% Created 2021-05-11 Tue 08:36
 % Intended LaTeX compiler: pdflatex
 \documentclass{beamer}\usepackage{listings}
 \usepackage{color}
@@ -62,8 +62,8 @@ basewidth={0.5em,0.4em},
 \end{frame}
 
 \section{Setting}
-\label{sec:org95084f7}
-\begin{frame}[label={sec:org61f5255}]{Disclaimer}
+\label{sec:orgc070d19}
+\begin{frame}[label={sec:org1517c77}]{Disclaimer}
 \begin{itemize}[<+->]
 \item The note is work in progress, and we have not used it before -- you are very welcome to comment on
 weird/unclear passages.
@@ -72,7 +72,7 @@ care about it, but the important part is the intuition which we talk about today
 \item Do NOT write like this in your report!
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org0637092}]{A statistical problem}
+\begin{frame}[label={sec:org918a43a}]{A statistical problem}
 We call a collection of probability measures \(\mathcal{P}\) together with a functional \(\TT \colon
 \mathcal{P} \rightarrow \R\) \emph{a statistical problem}.
 
@@ -93,7 +93,7 @@ with $f(a, x) := \E_{\P}\left[ Y \mid A=a, X=x  \right]$. The target parameter i
 \end{example}
 \end{frame}
 
-\begin{frame}[label={sec:org06ccbf7}]{Target and nuisance parameters}
+\begin{frame}[label={sec:org185c180}]{Target and nuisance parameters}
 \begin{description}
 \item[{Target parameter}] Low-dimensional, scientifically meaningful. \pause
 \item[{Nuisance parameters}] Needed to express the target parameter. \pause
@@ -117,7 +117,7 @@ $\P[\phi]$ means
 \end{example}
 \end{frame}
 
-\begin{frame}[label={sec:org99f4169}]{High-/infinite-dimensional nuisance parameters}
+\begin{frame}[label={sec:org2a6cd8f}]{High-/infinite-dimensional nuisance parameters}
 A parametric setting means that \(\mathcal{P}\) is finite-dimensional. We are interested in
 \emph{nonparametric} or \emph{semiparametric} settings which mean that \(\mathcal{P}\) is
 infinite-dimensional.
@@ -138,8 +138,8 @@ Trying to control for confounding \(\implies\) nice to have:
 \end{frame}
 
 \section{Motivation}
-\label{sec:orgfd98193}
-\begin{frame}[label={sec:org0ebc9c8}]{Toy example: Integrated kernel density}
+\label{sec:org3f07774}
+\begin{frame}[label={sec:org3c157ad}]{Toy example: Integrated kernel density}
 $\mathcal{P}$ consist all probability measures with continuous Lebesgue-density (this is an
 infinite-dimensional space). We want to estimate $F(x) = \P(X \leq x)$ for unknown
 $\P \in \mathcal{P}$. \pause Our target parameter is then $\theta = \TT(\P) = F_{\P}(x)$ which we
@@ -157,14 +157,14 @@ standard Gaussian distribution, and the bandwidth $h$ is chosen using cross-vali
 then obtain the target estimator $\hat{\theta}_n = \TT_0(\hat{f}_n)$.
 \end{frame}
 
-\begin{frame}[label={sec:orgbadc79a}]{How does this work in practice?}
+\begin{frame}[label={sec:org9ee9b87}]{How does this work in practice?}
 \pause
 \begin{center}
 \includegraphics[width=0.75\textwidth]{./figures/kernel-undersmooth-viz-presentation-3.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:org264b203}]{What happened?}
+\begin{frame}[label={sec:orgd31e06c}]{What happened?}
 \pause
 
 Consider a general problem \((\mathcal{P}, \TT)\) for which we can write \(\TT(\P) = \TT_0(\P, \nu) =
@@ -208,7 +208,7 @@ with $\mathbb{G}_n: = \sqrt{n}(\empmeas -\P)$ the empirical process.
 \end{description}
 \end{frame}
 
-\begin{frame}[label={sec:org6c86efb}]{What to do?  -- Taylor expansion}
+\begin{frame}[label={sec:orgfd3000d}]{What to do?  -- Taylor expansion}
 \pause
 Assume we could make a Taylor expansion of $\nu \mapsto \TT_0(\P, \nu)$, so that
 \begin{equation*}
@@ -238,8 +238,8 @@ Assume we could make a Taylor expansion of $\nu \mapsto \TT_0(\P, \nu)$, so that
 \end{frame}
 
 \section{Functional derivatives}
-\label{sec:orgc685146}
-\begin{frame}[label={sec:org6e2d2cc}]{Defining a functional derivative}
+\label{sec:org8597c9a}
+\begin{frame}[label={sec:orgc16e6c6}]{Defining a functional derivative}
 \begin{block}{What is a derivative? \pause}
 A linear approximation \(\dot{\TT}_x\) to the map \(\TT\) at \(x \in \mathcal{M}\), i.e.,
 \begin{equation*}
@@ -263,18 +263,34 @@ converging, or bounded)?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label={sec:org92ecb98}]{Pathwise Hadamard differentiability}
+\begin{frame}[label={sec:orgd72ec36}]{Pathwise Hadamard differentiability}
 Think of the gradient of a function defined on a manifold (surface).
 
+\begin{onlyenv}<1>
 \begin{center}
-\includegraphics[width=0.9\textwidth]{./figures/pathwise-dif.pdf}
+\includegraphics[width=0.9\textwidth]{./figures/Pathwise-derivative0.pdf}
 \end{center}
+\end{onlyenv}
+
+
+\begin{onlyenv}<2>
+\begin{center}
+\includegraphics[width=0.9\textwidth]{./figures/Pathwise-derivative1.pdf}
+\end{center}
+\end{onlyenv}
+
+\begin{onlyenv}<3>
+\begin{center}
+\includegraphics[width=0.9\textwidth]{./figures/Pathwise-derivative2.pdf}
+\end{center}
+\end{onlyenv}
 \end{frame}
 
 
+
 \section{Canonical gradient / efficient influence function}
-\label{sec:org4c04450}
-\begin{frame}[label={sec:org2a6d59f}]{Canonical gradient}
+\label{sec:org4977c04}
+\begin{frame}[label={sec:org34657be}]{Canonical gradient}
 \begin{definition}[Canonical gradient]
 Let \((\mathcal{P}, \TT)\) be a statistical problem, with \(\mathcal{P} \subset \mathcal{M}_{\mu}\),
 and \(\dot{\mathcal{P}}_{\P}\) the tangent space of \(\mathcal{P}\) at \(\P \in \mathcal{P}\). If
@@ -297,7 +313,7 @@ holds for any differentiable submodel $\P_{\epsilon}$ with score function $\dot{
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org8217328}]{Canonical gradient for the ATE}
+\begin{frame}[label={sec:org28bd024}]{Canonical gradient for the ATE}
 \begin{example}[ATE]
 When we make no assumptions about \(\mathcal{P}\), the canonical gradient for the ATE problem
 \begin{align*}
@@ -315,8 +331,8 @@ $\P_{\epsilon}$ (see for instance \cite{kennedy2016semiparametric}).
 \end{frame}
 
 \section{Summary of main results}
-\label{sec:org0a1f9ac}
-\begin{frame}[label={sec:org25df887}]{Neyman orthogonality}
+\label{sec:org1b22452}
+\begin{frame}[label={sec:orgef00878}]{Neyman orthogonality}
 \begin{theorem}[Neyman orthogonality]
 If $\TT(\P) = \TT_0(\P, \nu) = \P[\phi(O, \nu(\P))]$ and $\phi(\blank, \nu) - \P[\phi(O, \nu)]$ is the
 canonical gradient of $(\mathcal{P}, \TT)$ then $\mathrm{D_{\nu}{\TT_0}} = 0$.
@@ -329,7 +345,7 @@ The \emph{first order} bias, coming from \(\TT_0(\P, \hat{\nu}_n) - \TT_0(\P, \n
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org327e82d}]{Efficiency}
+\begin{frame}[label={sec:orgc490cb5}]{Efficiency}
 \begin{definition}[RAL estimators]
 An estimator $\hat{\theta}_n$ of the parameter $\theta = \TT(\P)$ under the model $\mathcal{P}$, is
 called \textit{asymptotically linear} with \textit{influence function} $\ic(\blank, \P) \in \lp$, if 
@@ -346,8 +362,8 @@ influence function.
 \end{frame}
 
 \section{Next step -- constructing estimator}
-\label{sec:org53682b6}
-\begin{frame}[label={sec:org94c4227}]{Constructing estimators: Solve the efficient score equation}
+\label{sec:org00e002f}
+\begin{frame}[label={sec:orgeecb83c}]{Constructing estimators: Solve the efficient score equation}
 Find a parametrization \(\TT(\P) = \P[\phi(O, \nu)]\) such that \(\phi\) is the (canonical) gradient.
 \pause Then by Neyman orthogonality and assumptions we can write
 \begin{align*}
@@ -373,9 +389,9 @@ Find a parametrization \(\TT(\P) = \P[\phi(O, \nu)]\) such that \(\phi\) is the 
 \end{frame}
 
 
-\begin{frame}[label={sec:orgb52ebc2}]{TMLE}
+\begin{frame}[label={sec:orgf223d58}]{TMLE}
 \end{frame}
-\begin{frame}[label={sec:orgdbd0abe}]{References}
+\begin{frame}[label={sec:org7951249}]{References}
 \small \bibliography{./latex-settings/default-bib.bib}
 \end{frame}
 \end{document}
