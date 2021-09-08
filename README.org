@@ -2,17 +2,6 @@
 
 Some of the material used in the course can be found here. 
 
-* Data
-The data we use can be retrieved by running the following commands in =R=, assuming you have
-installed the =data.table= package.
-
-#+BEGIN_SRC R
-library(data.table)
-pph <- fread("http://publicifsv.sund.ku.dk/~helene/pph-subset.csv")
-#+END_SRC
-
-*If you cannot load the data in this way, please write us immediately!*
-
 * Note on influence functions and functional derivatives
 We are working on a note that provides an introduction and motivation for studying semi-parametric
 efficiency theory (i.e., targeted learning), which you can find [[./intro-eif-concepts.pdf][here]]. We have tried to collect some
